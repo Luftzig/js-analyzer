@@ -13,4 +13,7 @@ cabal.sandbox.config
 *.aux
 *.hp
 *.eventlog
+.env
 .stack-work/
+
+.idea/
