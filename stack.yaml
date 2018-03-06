@@ -1,17 +1,15 @@
 flags: {}
-allow-newer: true
 packages:
 - .
+allow-newer: true
 extra-deps:
-- language-ecmascript-0.17.2.0
-- tagshare-0.0
-- testing-feat-0.4.0.3
 - Cabal-1.24.2.0
-- base-4.9.1.0
-- cabal-helper-0.7.3.0
-- extra-1.5.3
-- monad-journal-0.7.2
+- github-0.19
+- http-types-0.12.1
+- language-ecmascript-0.17.2.0
 - optparse-applicative-0.13.2.0
 - process-1.4.3.0
-- either-4.4.1.1
+- tagshare-0.0
+- tar-conduit-0.2.3
+- testing-feat-0.4.0.3
 resolver: lts-10.7
