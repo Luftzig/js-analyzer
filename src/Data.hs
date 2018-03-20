@@ -9,6 +9,7 @@ type URL = Text
 
 data Revision = Commit Text
               | Tag Name
+              | DefaultBranchHead
 
 data ProjectInfo = ProjectInfo
   { projectName :: Name

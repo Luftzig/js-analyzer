@@ -10,6 +10,7 @@ import qualified GitHub.Request as Github
 import GitHub.Data.Request (query)
 
 import Control.Monad (forM_)
+import Control.Monad.IO.Class (liftIO)
 import Data.List (intercalate)
 import Data.ByteString.Char8 (ByteString, pack)
 import Data.Maybe (listToMaybe, fromMaybe)
@@ -91,7 +92,7 @@ args = Options
 
 
 
-searchRepos :: Maybe Github.Auth -> Text -> [(ByteString, Text)] -> IO (Either Github.Error ProjectInfo)
+searchRepos :: Maybe Github.Auth -> Text -> [(ByteString, Text)] -> IO (Either Github.Error (Github.SearchResult Github.Repo))
 searchRepos auth search queryParams =
     let
       params = map (\(a, b) -> (a, Just $ TE.encodeUtf8 b)) queryParams
@@ -101,7 +102,7 @@ searchRepos auth search queryParams =
 
 analyzeRepos :: Maybe Auth.Auth -> Github.SearchResult Github.Repo -> IO ()
 analyzeRepos auth result = do
-    let repos = toProjectInfo auth <$> Github.searchResultResults result
+    repos <- sequence $ toProjectInfo auth <$> Github.searchResultResults result
     forM_ repos (analyze auth)
 
 
@@ -118,7 +119,7 @@ toProjectInfo auth repo = do
 
 getLatestRevision :: Maybe Auth.Auth -> Github.Repo -> IO Revision
 getLatestRevision auth repo =
-    return
+    return DefaultBranchHead
 
 
 -- formatRepo :: Github.Repo -> String
