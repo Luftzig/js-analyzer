@@ -18,31 +18,19 @@ import Data.Conduit.Zlib (ungzip)
 import qualified Data.Conduit.Tar as CT
 import qualified Data.Conduit.List as CL
 
-import GitHub.Data.Definitions (simpleOwnerLogin)
-import qualified GitHub.Auth as Auth
-import qualified GitHub.Data.Repos as Github
-import qualified GitHub.Data.Name as Github
-import qualified GitHub.Endpoints.Repos.Contents as Github
-
 import Network.HTTP.Simple
-import Network.URI (URI)
 import System.IO (IO)
 
 import Data
 
 
-analyze ::  Maybe Auth.Auth -> ProjectInfo -> IO ()
-analyze auth repo = do
-    (Right uri) <- Github.archiveFor' auth
-                      (Github.N $ projectOwner repo)
-                      (Github.N $ projectName repo)
-                      Github.ArchiveFormatTarball
-                      Nothing
-    runConduitRes (getArchiveContent uri .| CL.mapM_ (liftIO . print))
+analyze :: ProjectInfo -> IO ()
+analyze repo =
+    runConduitRes (getArchiveContent (archiveUrl repo) .| CL.mapM_ (liftIO . print))
 
 
-getArchiveContent :: URI -> ConduitM () CT.TarChunk (ResourceT IO) ()
-getArchiveContent uri =
+getArchiveContent :: Maybe URL -> ConduitM () CT.TarChunk (ResourceT IO) ()
+getArchiveContent (Just uri) =
     pipeline
     where
       response =
@@ -51,6 +39,7 @@ getArchiveContent uri =
           response
           .| ungzip
           .| CT.untarChunks
+getArchiveContent Nothing = mempty
 
 
 -- printFileNames :: ConduitM CT.TarChunk ()

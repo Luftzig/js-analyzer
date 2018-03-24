@@ -2,6 +2,7 @@
 module Data where
 
 import Data.Text (Text)
+import Data.Traversable (Traversable)
 
 type Name = Text
 
@@ -16,10 +17,17 @@ data ProjectInfo = ProjectInfo
   , projectOwner :: Name
   , repoUrl :: URL
   , projectRevision :: Revision
+  , archiveUrl :: Maybe URL
   }
 
 
-data FileStatistics = FileStatistics
+data ProjectStats = ProjectStats
+  { projectInfo :: ProjectInfo
+  , filesStats :: [FileStats]
+  }
+
+
+data FileStats = FileStats
     { fileName :: FilePath
     , linesOfCode :: Integer
     , forCount :: Integer
@@ -33,4 +41,4 @@ data FileStatistics = FileStatistics
     }
 
 
-type AnalyzeResult error = Either error FileStatistics
+type AnalyzeResult error = Either error FileStats

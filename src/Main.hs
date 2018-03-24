@@ -2,11 +2,14 @@
 
 module Main where
 
-import qualified GitHub.Endpoints.Search as Github
 import qualified GitHub.Auth as Auth
 import qualified GitHub.Data as Github
 import qualified GitHub.Data.Name as Github
+import qualified GitHub.Data.Repos as Github
+import qualified GitHub.Endpoints.Search as Github
+import qualified GitHub.Endpoints.Repos.Contents as Github
 import qualified GitHub.Request as Github
+import GitHub.Data.Definitions (simpleOwnerLogin)
 import GitHub.Data.Request (query)
 
 import Control.Monad (forM_)
@@ -18,6 +21,7 @@ import Data.String (fromString)
 import Data.Text (Text, unpack)
 import Data.Semigroup ((<>))
 import qualified Data.Text.Encoding as TE
+import Network.URI (URI)
 import System.Environment (lookupEnv, getArgs)
 import Options.Applicative
 
@@ -103,18 +107,32 @@ searchRepos auth search queryParams =
 analyzeRepos :: Maybe Auth.Auth -> Github.SearchResult Github.Repo -> IO ()
 analyzeRepos auth result = do
     repos <- sequence $ toProjectInfo auth <$> Github.searchResultResults result
-    forM_ repos (analyze auth)
+    forM_ repos analyze
 
 
 toProjectInfo :: Maybe Auth.Auth -> Github.Repo -> IO ProjectInfo
 toProjectInfo auth repo = do
   revision <- getLatestRevision auth repo
+  archiveUri <- getArchiveUri auth repo
   return ProjectInfo
     { projectName = (Github.untagName . Github.repoName) repo
     , projectOwner = (Github.untagName . Github.simpleOwnerLogin . Github.repoOwner) repo
     , repoUrl = (Github.getUrl . Github.repoUrl) repo
     , projectRevision = revision
+    , archiveUrl =  toMaybe archiveUri
     }
+  where
+    toUrl :: URI -> Maybe URL
+    toUrl = Just . fromString . show
+    toMaybe :: Either a URI -> Maybe URL
+    toMaybe = either (const Nothing) toUrl
+    getArchiveUri :: Maybe Auth.Auth -> Github.Repo -> IO (Either Github.Error URI)
+    getArchiveUri auth repo =
+         Github.archiveFor' auth
+                      (Github.simpleOwnerLogin $ Github.repoOwner repo)
+                      (Github.repoName repo)
+                      Github.ArchiveFormatTarball
+                      Nothing
 
 
 getLatestRevision :: Maybe Auth.Auth -> Github.Repo -> IO Revision
