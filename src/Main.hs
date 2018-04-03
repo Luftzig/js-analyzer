@@ -21,12 +21,14 @@ import Data.String (fromString)
 import Data.Text (Text, unpack)
 import Data.Semigroup ((<>))
 import qualified Data.Text.Encoding as TE
-import Network.URI (URI)
+import Network.URI (URI, uriToString)
 import System.Environment (lookupEnv, getArgs)
 import Options.Applicative
 
 import Analyze (analyze)
 import Data
+
+import Debug.Trace
 
 
 data Options = Options
@@ -117,13 +119,13 @@ toProjectInfo auth repo = do
   return ProjectInfo
     { projectName = (Github.untagName . Github.repoName) repo
     , projectOwner = (Github.untagName . Github.simpleOwnerLogin . Github.repoOwner) repo
-    , repoUrl = (Github.getUrl . Github.repoUrl) repo
+    , repoUrl = unpack $ (Github.getUrl . Github.repoUrl) repo
     , projectRevision = revision
     , archiveUrl =  toMaybe archiveUri
     }
   where
     toUrl :: URI -> Maybe URL
-    toUrl = Just . fromString . show
+    toUrl u = Just $ uriToString id u ""
     toMaybe :: Either a URI -> Maybe URL
     toMaybe = either (const Nothing) toUrl
     getArchiveUri :: Maybe Auth.Auth -> Github.Repo -> IO (Either Github.Error URI)

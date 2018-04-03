@@ -2,14 +2,5 @@ flags: {}
 packages:
 - .
 allow-newer: true
-extra-deps:
-- Cabal-1.24.2.0
-- github-0.19
-- http-types-0.12.1
-- language-ecmascript-0.17.2.0
-- optparse-applicative-0.13.2.0
-- process-1.4.3.0
-- tagshare-0.0
-- tar-conduit-0.2.3
-- testing-feat-0.4.0.3
-resolver: lts-10.7
+extra-deps: []
+resolver: lts-11.3

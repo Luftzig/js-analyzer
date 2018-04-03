@@ -6,7 +6,7 @@ import Data.Traversable (Traversable)
 
 type Name = Text
 
-type URL = Text
+type URL = String
 
 data Revision = Commit Text
               | Tag Name
