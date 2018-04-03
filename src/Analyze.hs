@@ -65,4 +65,4 @@ getJSFile header = when (isJsFile header) $ do
     content <- CL.fold (<>) mempty
     yield (CT.headerFilePath header, content)
     where
-      isJsFile header = ".js" `T.isSuffixOf` (T.pack . CT.headerFilePath) header
+      isJsFile header = ".js" `T.isSuffixOf` (T.toCaseFold . T.pack . CT.headerFilePath) header
