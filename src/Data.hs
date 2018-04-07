@@ -4,6 +4,8 @@ module Data where
 import Data.Text (Text)
 import Data.Traversable (Traversable)
 
+import qualified Text.Parsec.Error as Parsec
+
 type Name = Text
 
 type URL = String
@@ -36,9 +38,27 @@ data FileStats = FileStats
     , whileCount :: Integer
     , forEachCount :: Integer
     , mapCount :: Integer
-    , filter :: Integer
-    , reduce :: Integer
+    , filterCount :: Integer
+    , reduceCount :: Integer
+    }
+
+
+emptyStats :: FileStats
+emptyStats =
+  FileStats
+    { fileName = "Unknown"
+    , linesOfCode = 0
+    , forCount = 0
+    , forInCount = 0
+    , forOfCount = 0
+    , whileCount = 0
+    , forEachCount = 0
+    , mapCount = 0
+    , filterCount = 0
+    , reduceCount = 0
     }
 
 
 type AnalyzeResult error = Either error FileStats
+
+type ParseError = Parsec.ParseError

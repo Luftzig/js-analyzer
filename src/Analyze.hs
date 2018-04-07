@@ -27,6 +27,7 @@ import Network.HTTP.Simple
 import System.IO (FilePath, IO)
 
 import Data
+import qualified JsAnalyze as JS
 
 import Debug.Trace
 
@@ -36,6 +37,9 @@ analyze repo = do
     print $ "Processing " <> projectName repo <> " at " <> T.pack ( show (archiveUrl repo)) <> ": "
     count <- runConduitRes (
       getArchiveContent (archiveUrl repo)
+      .| filterFiles
+      .| analyzeFiles
+      .| printErrors
       .| countJSFiles
       )
     print count
@@ -54,10 +58,28 @@ getArchiveContent (Just uri) =
 getArchiveContent Nothing = mempty
 
 
-countJSFiles :: ConduitT CT.TarChunk Void (ResourceT IO) Integer
-countJSFiles =  CT.withEntries getJSFile
-                .| CL.map (const (1 :: Integer))
-                .| CL.fold (+) 0
+filterFiles :: MonadThrow m => ConduitT CT.TarChunk (FilePath, ByteString) m ()
+filterFiles =
+  CT.withEntries getJSFile
+
+
+analyzeFiles :: MonadThrow m => ConduitT (FilePath, ByteString) (Either ParseError FileStats) m ()
+analyzeFiles =
+  CL.map (uncurry JS.analyze)
+
+
+printErrors :: MonadIO m => ConduitT (Either ParseError FileStats) FileStats m ()
+printErrors =
+  CL.mapM printErrors .| CL.catMaybes
+  where
+    printErrors (Left e) = liftIO $ print e >> return Nothing
+    printErrors (Right s) = liftIO $ return $ Just s
+
+
+countJSFiles :: ConduitT a Void (ResourceT IO) Integer
+countJSFiles =
+  CL.map (const (1 :: Integer))
+    .| CL.fold (+) 0
 
 
 getJSFile :: Monad m => CT.Header -> ConduitT ByteString (FilePath, ByteString) m ()

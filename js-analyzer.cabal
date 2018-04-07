@@ -24,7 +24,8 @@ executable js-analyzer
   other-modules:       Analyze, Data
   build-depends:       base >= 4.7 && < 5
                ,       github >= 0.19
-               ,       language-ecmascript
+               ,       language-ecmascript >= 0.17.2
+               ,       parsec (> 3 && < 3.2.0)
                ,       text
                ,       bytestring
                ,       optparse-applicative
