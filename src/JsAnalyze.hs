@@ -9,6 +9,9 @@ import qualified Text.Parsec.Error as P
 
 import Data
 
+
+-- Maybe call esprima or acorn parser and parse the result JSON?
+
 analyze :: FilePath -> ByteString -> Either P.ParseError FileStats
 analyze path content =
   extractStats $ JS.parse JS.program path content

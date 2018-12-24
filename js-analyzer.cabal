@@ -21,7 +21,7 @@ executable js-analyzer
   hs-source-dirs:      src
   main-is:             Main.hs
   default-language:    Haskell2010
-  other-modules:       Analyze, Data
+  other-modules:       AnalyzeContent, Data, Projects, JsAnalyze
   build-depends:       base >= 4.7 && < 5
                ,       github >= 0.19
                ,       language-ecmascript >= 0.17.2

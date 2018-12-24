@@ -4,7 +4,7 @@
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE OverloadedStrings #-}
 
-module Analyze (analyze) where
+module AnalyzeContent (analyze) where
 
 import Control.Monad (when)
 import Control.Monad.Base (MonadBase)

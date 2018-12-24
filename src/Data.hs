@@ -20,6 +20,12 @@ data ProjectInfo = ProjectInfo
   , repoUrl :: URL
   , projectRevision :: Revision
   , archiveUrl :: Maybe URL
+  , dependencies :: [String]
+  , stars :: Integer
+  , contributors :: Integer
+  , commits :: Integer
+  , forks :: Integer
+  , createdAt :: String
   }
 
 
