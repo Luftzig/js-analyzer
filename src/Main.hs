@@ -8,15 +8,20 @@ import qualified GitHub.Request as Github
 
 import Control.Monad (forM_)
 import Control.Monad.IO.Class (liftIO)
+import qualified Data.Aeson.Text as A
 import Data.List (intercalate)
 import Data.ByteString.Char8 (ByteString, pack)
 import Data.Maybe (listToMaybe, fromMaybe)
 import Data.String (fromString)
 import Data.Text (Text, unpack)
+import Data.Vector (Vector)
+import qualified Data.Text.Lazy.IO as TextIO
 import Data.Semigroup ((<>))
 import qualified Data.Text.Encoding as TE
 import Network.URI (URI, uriToString)
+import System.Directory (createDirectoryIfMissing)
 import System.Environment (lookupEnv, getArgs)
+import System.FilePath.Posix ((</>))
 import System.IO (FilePath)
 import Options.Applicative
 
@@ -43,6 +48,7 @@ main = do
     args <- parseArgs
     let auth = fmap (Auth.OAuth . pack) token
     let search = fromString $ searchQuery args
+    createDirectoryIfMissing True $ outputDir args
     putStrLn $ "Searching " ++ unpack search
     result <- searchRepos auth search
       [ ("sort", fromString $ sort args)
@@ -115,7 +121,7 @@ analyzeRepos auth outputDir result = do
     forM_ repos analyze
 
 
-writeProjectsData :: (Traversable t) => FilePath -> t ProjectInfo -> IO ()
+writeProjectsData :: FilePath -> Vector ProjectInfo -> IO ()
 writeProjectsData outputDir projects =
-  return ()
+  TextIO.writeFile (outputDir </> "projects.json") (A.encodeToLazyText $ projects)
 

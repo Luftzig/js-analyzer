@@ -38,3 +38,8 @@ executable js-analyzer
                ,       primitive
                ,       resourcet
                ,       transformers-base >= 0.4.4
+               ,       aeson
+               ,       filepath
+               ,       vector
+               ,       directory
+               ,       time

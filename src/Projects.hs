@@ -13,6 +13,7 @@ import GitHub.Data.Request (query)
 
 import Network.URI (URI, uriToString)
 import Data.Text (Text, unpack)
+import Data.Maybe (fromMaybe)
 
 import Data
 
@@ -28,6 +29,11 @@ toProjectInfo auth repo = do
     , projectRevision = revision
     , archiveUrl =  toMaybe archiveUri
     , dependencies = dependencies
+    , stars = toInteger . Github.repoStargazersCount $ repo
+    , contributors = Nothing
+    , commits = Nothing
+    , forks = fmap toInteger $ Github.repoForks repo
+    , createdAt = Github.repoCreatedAt repo
     }
 
 
