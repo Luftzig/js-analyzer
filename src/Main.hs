@@ -25,7 +25,7 @@ import Network.URI (URI, uriToString)
 import System.Environment (lookupEnv, getArgs)
 import Options.Applicative
 
-import Analyze (analyze)
+import AnalyzeContent (analyze)
 import Data
 
 import Debug.Trace
