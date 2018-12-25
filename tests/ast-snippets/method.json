@@ -1,0 +1,34 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ExpressionStatement",
+      "expression": {
+        "type": "CallExpression",
+        "callee": {
+          "type": "MemberExpression",
+          "computed": false,
+          "object": {
+            "type": "Identifier",
+            "name": "_"
+          },
+          "property": {
+            "type": "Identifier",
+            "name": "map"
+          }
+        },
+        "arguments": [
+          {
+            "type": "Identifier",
+            "name": "fn2"
+          },
+          {
+            "type": "ArrayExpression",
+            "elements": []
+          }
+        ]
+      }
+    }
+  ],
+  "sourceType": "script"
+}
