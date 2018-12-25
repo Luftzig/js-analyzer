@@ -45,3 +45,4 @@ executable js-analyzer
                ,       directory
                ,       time
                ,       process
+               ,       either

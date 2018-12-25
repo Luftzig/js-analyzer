@@ -3,7 +3,10 @@
 module Main where
 
 import qualified GitHub.Auth as Auth
+import qualified GitHub.Data as Github
+import qualified GitHub.Data.Name as Github
 import qualified GitHub.Endpoints.Search as Github
+import qualified GitHub.Endpoints.Repos as Github
 import qualified GitHub.Request as Github
 
 import Control.Monad (forM_)
@@ -11,10 +14,13 @@ import Control.Monad.IO.Class (liftIO)
 import qualified Data.Aeson.Text as A
 import Data.List (intercalate)
 import Data.ByteString.Char8 (ByteString, pack)
+import Data.Either (lefts, rights)
+import Data.Either.Combinators (mapLeft)
 import Data.Maybe (listToMaybe, fromMaybe)
 import Data.String (fromString)
-import Data.Text (Text, unpack)
-import Data.Vector (Vector)
+import Data.Text (Text, breakOn, intercalate, unpack, lines, splitOn, strip, tail)
+import qualified Data.Text.IO as T
+import Data.Vector (Vector, fromList)
 import qualified Data.Text.Lazy.IO as TextIO
 import Data.Semigroup ((<>))
 import qualified Data.Text.Encoding as TE
@@ -34,12 +40,19 @@ import Debug.Trace
 
 data Options = Options
     { searchQuery :: String
-    , perPage :: Int
     , page :: Int
+    , numResults :: Int
     , sort :: String
     , order :: String
     , outputDir :: String
+    , reposFile :: Maybe String
+    , process :: Bool
     }
+
+
+data Error = GithubError Github.Error
+           | ReadReposFileError
+           deriving (Show)
 
 
 main :: IO ()
@@ -47,18 +60,14 @@ main = do
     token <- lookupEnv "GITHUB_TOKEN"
     args <- parseArgs
     let auth = fmap (Auth.OAuth . pack) token
-    let search = fromString $ searchQuery args
     createDirectoryIfMissing True $ outputDir args
-    putStrLn $ "Searching " ++ unpack search
-    result <- searchRepos auth search
-      [ ("sort", fromString $ sort args)
-      , ("order", fromString $ order args)
-      , ("per_page", fromString . show $ perPage args)
-      , ("page", fromString . show $ page args)
-      ]
-    case result of
-      Left e -> putStrLn $ "Error: " ++ show e
-      Right r -> analyzeRepos auth (outputDir args) r
+    result <- getReposToProcess args auth
+    case (process args, result) of
+      (_, Left e) -> putStrLn $ "Error: " ++ show e
+      (True, Right r) -> analyzeRepos auth (outputDir args) r
+      (False, Right rs) -> putStrLn $ show $ fmap repoId rs
+    where
+      repoId r = Data.Text.intercalate "/" [Github.untagName $ Github.simpleOwnerLogin $ Github.repoOwner r, Github.untagName $ Github.repoName r]
 
 
 parseArgs :: IO Options
@@ -78,45 +87,112 @@ args = Options
     <> short 'q'
     <> metavar "SEARCH"
     <> value "language:javascript"
+    <> showDefault
     <> help "Github query")
   <*> option auto
-    ( long "per-page"
-    <> value 100
+    ( long "page"
+    <> value 1
     )
   <*> option auto
-    ( long "page"
-    <> short 'p'
-    <> value 1
+    ( long "num-results"
+    <> short 'n'
+    <> value 100
+    <> showDefault
+    <> help "limit search to that number of results"
     )
   <*> strOption
     ( long "sort-by"
     <> short 's'
     <> value "stars"
+    <> showDefault
     )
   <*> strOption
     ( long "order"
     <> short 'o'
     <> value "desc"
+    <> showDefault
     )
   <*> strOption
     ( long "outputDir"
     <> short 'd'
     <> value "out"
+    <> showDefault
+    )
+  <*> repos
+  <*> switch
+    ( long "process"
+    <> short 'p'
+    <> help "if set, will run the processing chain on the input (file or search) repositories. Otherwise will just print repositories metadata"
+    <> showDefault
     )
 
 
+reposFileOption :: Parser (Maybe FilePath)
+reposFileOption = Just <$> strOption
+    ( long "repos"
+    <> short 'r'
+    <> help "path to a comma or new-line delimited list of repositories to process. Implies `process`"
+    )
 
-searchRepos :: Maybe Github.Auth -> Text -> [(ByteString, Text)] -> IO (Either Github.Error (Github.SearchResult Github.Repo))
-searchRepos auth search queryParams =
-    let
-      params = map (\(a, b) -> (a, Just $ TE.encodeUtf8 b)) queryParams
-    in
-      Github.executeRequestMaybe auth $ Github.query ["search", "repositories"] (("q", Just $ TE.encodeUtf8 search):params)
+
+searchReposOption :: Parser (Maybe FilePath)
+searchReposOption= const Nothing <$> switch
+  ( long "search"
+  <> short 'S'
+  <> help "Search github for repositories to process"
+  )
 
 
-analyzeRepos :: Maybe Auth.Auth -> FilePath -> Github.SearchResult Github.Repo -> IO ()
+repos :: Parser (Maybe FilePath)
+repos = reposFileOption <|> searchReposOption
+
+
+getReposToProcess :: Options -> Maybe Github.Auth -> IO (Either Error (Vector Github.Repo))
+getReposToProcess args@(Options {reposFile=Nothing}) auth = do
+    let search = fromString $ searchQuery args
+    putStrLn $ "Searching " ++ unpack search
+    result <- searchRepos auth search
+      [ ("sort", fromString $ sort args)
+      , ("order", fromString $ order args)
+      , ("per_page", fromString . show $ numResults args)
+      , ("page", fromString . show $ page args)
+      ]
+    return $ mapLeft GithubError result
+
+
+getReposToProcess args@(Options {reposFile=(Just file)}) auth = do
+    resolveRepositoriesFromList auth file
+
+
+resolveRepositoriesFromList :: Maybe Github.Auth -> FilePath -> IO (Either Error (Vector Github.Repo))
+resolveRepositoriesFromList auth file = do
+  fileContent <- T.readFile file
+  names <- return $ concatMap (splitOn ",") $ Data.Text.lines fileContent
+  repos <- mapM (getRepoInfo auth) names
+  failures <- return $ lefts repos
+  successes <- return $ rights repos
+  case failures of
+    []   -> return $ Right $ fromList successes
+    f:fs -> return $ Left $ GithubError f
+
+
+getRepoInfo :: Maybe Github.Auth -> Text -> IO (Either Github.Error Github.Repo)
+getRepoInfo auth fullName = do
+  let (ownerT, repoT) = Data.Text.breakOn "/" fullName
+  let (owner, repo) = (Github.N $ Data.Text.strip $ ownerT, Github.N $ Data.Text.strip $ Data.Text.tail repoT)
+  Github.repository' auth owner repo
+
+
+searchRepos :: Maybe Github.Auth -> Text -> [(ByteString, Text)] -> IO (Either Github.Error (Vector Github.Repo))
+searchRepos auth search queryParams = do
+    let params = map (\(a, b) -> (a, Just $ TE.encodeUtf8 b)) queryParams
+    response <- Github.executeRequestMaybe auth $ Github.query ["search", "repositories"] (("q", Just $ TE.encodeUtf8 search):params)
+    return $ Github.searchResultResults <$> response
+
+
+analyzeRepos :: Maybe Auth.Auth -> FilePath -> Vector Github.Repo -> IO ()
 analyzeRepos auth outputDir result = do
-    repos <- sequence $ toProjectInfo auth <$> Github.searchResultResults result
+    repos <- sequence $ toProjectInfo auth <$> result
     writeProjectsData outputDir repos
     forM_ repos analyze
 
@@ -124,4 +200,5 @@ analyzeRepos auth outputDir result = do
 writeProjectsData :: FilePath -> Vector ProjectInfo -> IO ()
 writeProjectsData outputDir projects =
   TextIO.writeFile (outputDir </> "projects.json") (A.encodeToLazyText $ projects)
+
 
