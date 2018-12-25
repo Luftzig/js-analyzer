@@ -11,7 +11,7 @@ import Control.Monad.Base (MonadBase)
 import Control.Monad.Catch (MonadThrow)
 import Control.Monad.IO.Class (liftIO, MonadIO)
 import Control.Monad.Primitive (PrimMonad)
-import Control.Monad.Trans.Resource (MonadResource, ResourceT)
+import Control.Monad.Trans.Resource (MonadResource, MonadUnliftIO, ResourceT)
 
 import Data.Semigroup ((<>))
 
@@ -63,9 +63,9 @@ filterFiles =
   CT.withEntries getJSFile
 
 
-analyzeFiles :: MonadThrow m => ConduitT (FilePath, ByteString) (Either ParseError FileStats) m ()
+analyzeFiles :: (MonadThrow m, MonadUnliftIO m) => ConduitT (FilePath, ByteString) (Either ParseError FileStats) m ()
 analyzeFiles =
-  CL.map (uncurry JS.analyze)
+  CL.mapM (liftIO . uncurry JS.analyze)
 
 
 printErrors :: MonadIO m => ConduitT (Either ParseError FileStats) FileStats m ()

@@ -16,5 +16,6 @@ cabal.sandbox.config
 .env
 .stack-work/
 out/
+node_modules/
 
 .idea/

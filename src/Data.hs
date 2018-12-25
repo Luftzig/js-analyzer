@@ -99,7 +99,10 @@ emptyStats =
     , reduceCount = 0
     }
 
+statsForPath :: FilePath -> FileStats
+statsForPath path =
+  emptyStats { fileName = path }
 
 type AnalyzeResult error = Either error FileStats
 
-type ParseError = Parsec.ParseError
+type ParseError = Text
