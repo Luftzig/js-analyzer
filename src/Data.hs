@@ -37,7 +37,7 @@ data ProjectInfo = ProjectInfo
   , repoUrl :: URL
   , projectRevision :: Revision
   , archiveUrl :: Maybe URL
-  , dependencies :: [String]
+  , dependencies :: [Text]
   , stars :: Integer
   , contributors :: Maybe Integer
   , commits :: Maybe Integer

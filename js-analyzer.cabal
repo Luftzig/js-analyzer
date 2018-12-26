@@ -46,3 +46,6 @@ executable js-analyzer
                ,       time
                ,       process
                ,       either
+               ,       lens-aeson
+               ,       lens
+               ,       base64-bytestring
