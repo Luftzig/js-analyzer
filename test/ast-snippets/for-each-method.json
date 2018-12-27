@@ -1,0 +1,80 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ExpressionStatement",
+      "expression": {
+        "type": "CallExpression",
+        "callee": {
+          "type": "MemberExpression",
+          "computed": false,
+          "object": {
+            "type": "Identifier",
+            "name": "fruits"
+          },
+          "property": {
+            "type": "Identifier",
+            "name": "forEach"
+          }
+        },
+        "arguments": [
+          {
+            "type": "FunctionExpression",
+            "id": null,
+            "params": [
+              {
+                "type": "Identifier",
+                "name": "item"
+              },
+              {
+                "type": "Identifier",
+                "name": "index"
+              },
+              {
+                "type": "Identifier",
+                "name": "array"
+              }
+            ],
+            "body": {
+              "type": "BlockStatement",
+              "body": [
+                {
+                  "type": "ExpressionStatement",
+                  "expression": {
+                    "type": "CallExpression",
+                    "callee": {
+                      "type": "MemberExpression",
+                      "computed": false,
+                      "object": {
+                        "type": "Identifier",
+                        "name": "console"
+                      },
+                      "property": {
+                        "type": "Identifier",
+                        "name": "log"
+                      }
+                    },
+                    "arguments": [
+                      {
+                        "type": "Identifier",
+                        "name": "item"
+                      },
+                      {
+                        "type": "Identifier",
+                        "name": "index"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "generator": false,
+            "expression": false,
+            "async": false
+          }
+        ]
+      }
+    }
+  ],
+  "sourceType": "script"
+}

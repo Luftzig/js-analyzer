@@ -17,35 +17,92 @@ source-repository head
   type:     git
   location: https://github.com/Luftzig/js-analyzer.git
 
+library
+  hs-source-dirs:      src
+  exposed-modules:     AnalyzeContent
+                     , Data
+                     , Analyze.WalkAst
+                     , Projects
+                     , JsAnalyze
+  default-language:    Haskell2010
+  build-depends: base >= 4.7 && < 5
+               , github >= 0.19
+               , text
+               , bytestring
+               , streaming-bytestring
+               , optparse-applicative
+               , conduit >= 1.3.0
+               , conduit-extra
+               , http-conduit
+               , network-uri
+               , tar-conduit >= 0.2.3
+               , exceptions
+               , primitive
+               , resourcet
+               , transformers-base >= 0.4.4
+               , aeson
+               , filepath
+               , vector
+               , directory
+               , time
+               , process
+               , either
+               , lens-aeson
+               , lens
+               , base64-bytestring
+               , containers
+               , unordered-containers
+
+
 executable js-analyzer
   hs-source-dirs:      src
   main-is:             Main.hs
   default-language:    Haskell2010
-  other-modules:       AnalyzeContent, Data, Projects, JsAnalyze
-  build-depends:       base >= 4.7 && < 5
-               ,       github >= 0.19
-               ,       language-ecmascript >= 0.17.2
-               ,       parsec (> 3 && < 3.2.0)
-               ,       text
-               ,       bytestring
-               ,       streaming-bytestring
-               ,       optparse-applicative
-               ,       conduit >= 1.3.0
-               ,       conduit-extra
-               ,       http-conduit
-               ,       network-uri
-               ,       tar-conduit >= 0.2.3
-               ,       exceptions
-               ,       primitive
-               ,       resourcet
-               ,       transformers-base >= 0.4.4
-               ,       aeson
-               ,       filepath
-               ,       vector
-               ,       directory
-               ,       time
-               ,       process
-               ,       either
-               ,       lens-aeson
-               ,       lens
-               ,       base64-bytestring
+  other-modules:       AnalyzeContent, Data, Projects, JsAnalyze, Analyze.WalkAst
+  build-depends: base
+               , js-analyzer
+               , github >= 0.19
+               , text
+               , bytestring
+               , streaming-bytestring
+               , optparse-applicative
+               , conduit >= 1.3.0
+               , conduit-extra
+               , http-conduit
+               , network-uri
+               , tar-conduit >= 0.2.3
+               , exceptions
+               , primitive
+               , resourcet
+               , transformers-base >= 0.4.4
+               , aeson
+               , filepath
+               , vector
+               , directory
+               , time
+               , process
+               , either
+               , lens-aeson
+               , lens
+               , base64-bytestring
+               , containers
+               , unordered-containers
+
+
+
+test-suite spec
+  type: exitcode-stdio-1.0
+  main-is: Spec.hs
+  hs-source-dirs:
+      test
+  ghc-options: -Wall
+  build-depends:
+      base ==4.*
+    , hspec ==2.*
+    , aeson
+    , js-analyzer
+    , text
+  other-modules:
+      AstSpec
+  default-language: Haskell2010
+  build-tool-depends: hspec-discover:hspec-discover == 2.*

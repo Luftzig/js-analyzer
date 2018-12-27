@@ -8,8 +8,6 @@ import Data.Time.Clock (UTCTime)
 import GHC.Generics
 import Data.Aeson
 
-import qualified Text.Parsec.Error as Parsec
-
 type Name = Text
 
 type URL = String
@@ -98,6 +96,20 @@ emptyStats =
     , filterCount = 0
     , reduceCount = 0
     }
+
+
+sumFileStats :: FileStats -> FileStats -> FileStats
+sumFileStats s1 s2 =
+  s1 { forCount = forCount s1 + forCount s2
+    , forInCount = forInCount s1 + forInCount s2
+    , forOfCount = forOfCount s1 + forOfCount s2
+    , whileCount = whileCount s1 + whileCount s2
+    , forEachCount = forEachCount s1 + forEachCount s2
+    , mapCount = mapCount s1 + mapCount s2
+    , filterCount = filterCount s1 + filterCount s2
+    , reduceCount = reduceCount s1 + reduceCount s2
+  }
+
 
 statsForPath :: FilePath -> FileStats
 statsForPath path =

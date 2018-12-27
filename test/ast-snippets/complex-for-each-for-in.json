@@ -1,0 +1,350 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ExpressionStatement",
+      "expression": {
+        "type": "Literal",
+        "value": "use strict",
+        "raw": "'use strict'"
+      },
+      "directive": "use strict"
+    },
+    {
+      "type": "VariableDeclaration",
+      "declarations": [
+        {
+          "type": "VariableDeclarator",
+          "id": {
+            "type": "Identifier",
+            "name": "AnimatedNode"
+          },
+          "init": {
+            "type": "CallExpression",
+            "callee": {
+              "type": "Identifier",
+              "name": "require"
+            },
+            "arguments": [
+              {
+                "type": "Literal",
+                "value": "./AnimatedNode",
+                "raw": "'./AnimatedNode'"
+              }
+            ]
+          }
+        }
+      ],
+      "kind": "const"
+    },
+    {
+      "type": "VariableDeclaration",
+      "declarations": [
+        {
+          "type": "VariableDeclarator",
+          "id": {
+            "type": "Identifier",
+            "name": "AnimatedWithChildren"
+          },
+          "init": {
+            "type": "CallExpression",
+            "callee": {
+              "type": "Identifier",
+              "name": "require"
+            },
+            "arguments": [
+              {
+                "type": "Literal",
+                "value": "./AnimatedWithChildren",
+                "raw": "'./AnimatedWithChildren'"
+              }
+            ]
+          }
+        }
+      ],
+      "kind": "const"
+    },
+    {
+      "type": "VariableDeclaration",
+      "declarations": [
+        {
+          "type": "VariableDeclarator",
+          "id": {
+            "type": "Identifier",
+            "name": "NativeAnimatedHelper"
+          },
+          "init": {
+            "type": "CallExpression",
+            "callee": {
+              "type": "Identifier",
+              "name": "require"
+            },
+            "arguments": [
+              {
+                "type": "Literal",
+                "value": "../NativeAnimatedHelper",
+                "raw": "'../NativeAnimatedHelper'"
+              }
+            ]
+          }
+        }
+      ],
+      "kind": "const"
+    },
+    {
+      "type": "ClassDeclaration",
+      "id": {
+        "type": "Identifier",
+        "name": "AnimatedTransform"
+      },
+      "superClass": {
+        "type": "Identifier",
+        "name": "AnimatedWithChildren"
+      },
+      "body": {
+        "type": "ClassBody",
+        "body": [
+          {
+            "type": "MethodDefinition",
+            "key": {
+              "type": "Identifier",
+              "name": "constructor"
+            },
+            "computed": false,
+            "value": {
+              "type": "FunctionExpression",
+              "id": null,
+              "params": [
+                {
+                  "type": "Identifier",
+                  "name": "transforms"
+                }
+              ],
+              "body": {
+                "type": "BlockStatement",
+                "body": [
+                  {
+                    "type": "ExpressionStatement",
+                    "expression": {
+                      "type": "CallExpression",
+                      "callee": {
+                        "type": "Super"
+                      },
+                      "arguments": []
+                    }
+                  },
+                  {
+                    "type": "ExpressionStatement",
+                    "expression": {
+                      "type": "AssignmentExpression",
+                      "operator": "=",
+                      "left": {
+                        "type": "MemberExpression",
+                        "computed": false,
+                        "object": {
+                          "type": "ThisExpression"
+                        },
+                        "property": {
+                          "type": "Identifier",
+                          "name": "_transforms"
+                        }
+                      },
+                      "right": {
+                        "type": "Identifier",
+                        "name": "transforms"
+                      }
+                    }
+                  }
+                ]
+              },
+              "generator": false,
+              "expression": false,
+              "async": false
+            },
+            "kind": "constructor",
+            "static": false
+          },
+          {
+            "type": "MethodDefinition",
+            "key": {
+              "type": "Identifier",
+              "name": "__makeNative"
+            },
+            "computed": false,
+            "value": {
+              "type": "FunctionExpression",
+              "id": null,
+              "params": [],
+              "body": {
+                "type": "BlockStatement",
+                "body": [
+                  {
+                    "type": "ExpressionStatement",
+                    "expression": {
+                      "type": "CallExpression",
+                      "callee": {
+                        "type": "MemberExpression",
+                        "computed": false,
+                        "object": {
+                          "type": "MemberExpression",
+                          "computed": false,
+                          "object": {
+                            "type": "ThisExpression"
+                          },
+                          "property": {
+                            "type": "Identifier",
+                            "name": "_transforms"
+                          }
+                        },
+                        "property": {
+                          "type": "Identifier",
+                          "name": "forEach"
+                        }
+                      },
+                      "arguments": [
+                        {
+                          "type": "ArrowFunctionExpression",
+                          "id": null,
+                          "params": [
+                            {
+                              "type": "Identifier",
+                              "name": "transform"
+                            }
+                          ],
+                          "body": {
+                            "type": "BlockStatement",
+                            "body": [
+                              {
+                                "type": "ForInStatement",
+                                "left": {
+                                  "type": "VariableDeclaration",
+                                  "declarations": [
+                                    {
+                                      "type": "VariableDeclarator",
+                                      "id": {
+                                        "type": "Identifier",
+                                        "name": "key"
+                                      },
+                                      "init": null
+                                    }
+                                  ],
+                                  "kind": "const"
+                                },
+                                "right": {
+                                  "type": "Identifier",
+                                  "name": "transform"
+                                },
+                                "body": {
+                                  "type": "BlockStatement",
+                                  "body": [
+                                    {
+                                      "type": "VariableDeclaration",
+                                      "declarations": [
+                                        {
+                                          "type": "VariableDeclarator",
+                                          "id": {
+                                            "type": "Identifier",
+                                            "name": "value"
+                                          },
+                                          "init": {
+                                            "type": "MemberExpression",
+                                            "computed": true,
+                                            "object": {
+                                              "type": "Identifier",
+                                              "name": "transform"
+                                            },
+                                            "property": {
+                                              "type": "Identifier",
+                                              "name": "key"
+                                            }
+                                          }
+                                        }
+                                      ],
+                                      "kind": "const"
+                                    },
+                                    {
+                                      "type": "IfStatement",
+                                      "test": {
+                                        "type": "BinaryExpression",
+                                        "operator": "instanceof",
+                                        "left": {
+                                          "type": "Identifier",
+                                          "name": "value"
+                                        },
+                                        "right": {
+                                          "type": "Identifier",
+                                          "name": "AnimatedNode"
+                                        }
+                                      },
+                                      "consequent": {
+                                        "type": "BlockStatement",
+                                        "body": [
+                                          {
+                                            "type": "ExpressionStatement",
+                                            "expression": {
+                                              "type": "CallExpression",
+                                              "callee": {
+                                                "type": "MemberExpression",
+                                                "computed": false,
+                                                "object": {
+                                                  "type": "Identifier",
+                                                  "name": "value"
+                                                },
+                                                "property": {
+                                                  "type": "Identifier",
+                                                  "name": "__makeNative"
+                                                }
+                                              },
+                                              "arguments": []
+                                            }
+                                          }
+                                        ]
+                                      },
+                                      "alternate": null
+                                    }
+                                  ]
+                                },
+                                "each": false
+                              }
+                            ]
+                          },
+                          "generator": false,
+                          "expression": false,
+                          "async": false
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "type": "ExpressionStatement",
+                    "expression": {
+                      "type": "CallExpression",
+                      "callee": {
+                        "type": "MemberExpression",
+                        "computed": false,
+                        "object": {
+                          "type": "Super"
+                        },
+                        "property": {
+                          "type": "Identifier",
+                          "name": "__makeNative"
+                        }
+                      },
+                      "arguments": []
+                    }
+                  }
+                ]
+              },
+              "generator": false,
+              "expression": false,
+              "async": false
+            },
+            "kind": "method",
+            "static": false
+          }
+        ]
+      }
+    }
+  ],
+  "sourceType": "script"
+}

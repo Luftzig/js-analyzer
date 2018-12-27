@@ -18,6 +18,6 @@ cabal.sandbox.config
 out/
 node_modules/
 
-tests/archives/
+test/archives/
 
 .idea/

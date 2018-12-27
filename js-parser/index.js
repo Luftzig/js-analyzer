@@ -15,7 +15,7 @@ const data = () => {
 const {append: appendData, get: getData} = data()
 process.stdin.on("data", appendData)
 process.stdin.on("end", () => {
-  const result = esprima.parse(getData().join("\n"))
+  const result = esprima.parseModule(getData().join("\n"), {jsx: true, tolerant: true})
   process.stdout.write(JSON.stringify(result))
   process.exit(0)
 })
