@@ -1,8 +1,12 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE RecordWildCards #-}
+
 module Data where
 
-import Data.Text (Text, intercalate)
+import Control.Applicative
+
+import Data.Text (Text, intercalate, breakOn)
 import Data.Traversable (Traversable)
 import Data.Time.Clock (UTCTime)
 import GHC.Generics
@@ -29,6 +33,12 @@ instance ToJSON Revision where
   toJSON (DefaultBranchHead) = object ["tag" .= ("HEAD" :: Text)]
 
 
+instance FromJSON Revision where
+  parseJSON (Object o) =
+    (Commit <$> o .: "commit")
+    <|> (Tag <$> o .: "tag")
+
+
 data ProjectInfo = ProjectInfo
   { projectName :: Name
   , projectOwner :: Name
@@ -46,6 +56,22 @@ data ProjectInfo = ProjectInfo
 
 projectId :: ProjectInfo -> Text
 projectId p = intercalate "/" [projectOwner p, projectName p]
+
+instance FromJSON ProjectInfo where
+  parseJSON (Object o) = do
+    id <- o .: "id"
+    let projectName  = (snd . breakOn "/") id
+    let projectOwner = (fst . breakOn "/") id
+    repoUrl <- o .: "repoUrl"
+    projectRevision <- o .: "projectRevision"
+    archiveUrl <- o .: "archiveUrl"
+    dependencies <- o .: "dependencies"
+    stars <- o .: "stars"
+    contributors <- o .: "contributors"
+    commits <- o .: "commits"
+    forks <- o .: "forks"
+    createdAt <- o .: "createdAt"
+    return $ ProjectInfo {..}
 
 
 instance ToJSON ProjectInfo where
@@ -69,17 +95,25 @@ data ProjectStats = ProjectStats
 
 
 data FileStats = FileStats
-    { fileName :: FilePath
-    , linesOfCode :: Integer
-    , forCount :: Integer
-    , forInCount :: Integer
-    , forOfCount :: Integer
-    , whileCount :: Integer
-    , forEachCount :: Integer
-    , mapCount :: Integer
-    , filterCount :: Integer
-    , reduceCount :: Integer
-    } deriving Show
+      { fileName :: FilePath
+      , linesOfCode :: Integer
+      , forCount :: Integer
+      , forInCount :: Integer
+      , forOfCount :: Integer
+      , whileCount :: Integer
+      , forEachCount :: Integer
+      , mapCount :: Integer
+      , filterCount :: Integer
+      , reduceCount :: Integer
+      }
+    | FailedStats
+      { fileName :: FilePath
+      , failReason :: Text
+      }
+    deriving (Show, Generic)
+
+
+instance ToJSON FileStats
 
 
 emptyStats :: FileStats
@@ -117,4 +151,4 @@ statsForPath path =
 
 type AnalyzeResult error = Either error FileStats
 
-type ParseError = Text
+data ParseError = ParseError FilePath Text deriving (Show)

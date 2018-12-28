@@ -2,10 +2,12 @@
 module JsAnalyze (analyze, processAst) where
 
 import Conduit
+import qualified Data.Conduit.Combinators as CC
 import Data.Aeson
-import Data.ByteString.Lazy (ByteString, unpack, hGetContents, hPutStr, putStr, toStrict)
+import Data.ByteString (ByteString, unpack, hGetContents, hPutStr, putStr)
 import qualified Data.ByteString.Lazy as LBS
 import qualified Data.ByteString as SBS
+import qualified Data.ByteString.Char8 as BC
 import Data.ByteString.Char8 (pack)
 import Data.Conduit.Process
 import qualified Data.HashMap.Strict as M
@@ -24,31 +26,34 @@ import Data.Aeson.Lens
 import Debug.Trace
 
 import Data
+import Analyze.WalkAst
 
 
 -- Maybe call esprima or acorn parser and parse the result JSON?
 
-analyze :: FilePath -> SBS.ByteString -> IO (Either ParseError FileStats)
+analyze :: FilePath -> ByteString -> IO (Either ParseError FileStats)
 analyze path content = do
-  liftIO $ putStrLn $ "Processing file " ++ path
-  astText <- extractAndParserFileContent content
-  return $ do
+  let numLines = toInteger . length . BC.lines
+  astText <- extractAndParseFileContent content
+  return $ either
+    (Left . (ParseError path))
+    Right (do
      rawJson <- astText
      astResult <- processAst rawJson
-     Right $ astResult {fileName=path}
---     (\stats -> stats {fileName=path}) $ fmap processAst $ rawJson
+     Right $ astResult {fileName=path, linesOfCode=numLines content}
+     )
 
 
-extractAndParserFileContent :: SBS.ByteString -> IO (Either ParseError ByteString)
-extractAndParserFileContent content = do
-  (Just inStream, Just outStream, Just errorStream, handle) <- createProcess (esprima { std_in = CreatePipe, std_out = CreatePipe, std_err = CreatePipe })
-  hPutStr inStream $ LBS.fromStrict content
-  hFlush inStream
-  hClose inStream
-  result <- hGetContents outStream
-  errors <- hGetContents errorStream
-  exitCode <- waitForProcess handle
-  return $ if exitCode == ExitSuccess then Right result else Left $ decodeUtf8 $ toStrict errors
+extractAndParseFileContent :: MonadUnliftIO m => ByteString -> m (Either Text ByteString)
+extractAndParseFileContent content = do
+    let esprimaP = (esprima { std_in = CreatePipe, std_out = CreatePipe, std_err = CreatePipe })
+    (exitCode, results, errors) <- sourceProcessWithStreams
+      esprimaP
+      (yield content)
+      CC.fold
+      CC.fold
+    liftIO $ print results
+    return $ if exitCode == ExitSuccess then Right results else Left $ decodeUtf8 errors
 
 
 esprima :: CreateProcess
@@ -56,29 +61,18 @@ esprima =
   proc "node" ["js-parser" </> "index.js"]
 
 
-processAst :: ByteString -> Either ParseError FileStats
+processAst :: ByteString -> Either Text FileStats
 processAst json =
   let
-    value = decode json :: Maybe Value
+    value = eitherDecodeStrict json :: Either String Value
   in
     case value of
-      Just ast -> Right $ countStructures ast
-      Nothing -> Left "Failed to read AST"
+      Right ast -> Right $ countStructures ast
+      Left e -> trace ("Failed to decode AST: " ++ e ) $ Left $ T.pack ("Failed to decode AST: " ++ e)
 
 
 countStructures :: Value -> FileStats
-countStructures val = do
-  let nType = val ^? key "type"._String
---  obj <- val ^? _Object
---  nodeType <- val ^? key "type" . _String
---  containedArray <- obj ^.. _2 . _Array
---  containedObjs <- obj ^.. _2 . _Object
-  let cs = val ^.. members
-  let memberObjects = val ^.. members . _Object
-  let memberArrays = val ^.. members . _Array
-  let fromMembers = trace ("members" ++ (show memberArrays) ++ (show memberObjects)) $ map countStructures cs
-  case nType of
-    Nothing -> emptyStats
-    Just typeName -> trace ("Found type " ++ (T.unpack typeName)) $ foldl sumFileStats emptyStats $ fromMembers
+countStructures =
+  (foldl sumFileStats emptyStats) . (visitNode countPatterns)
 
 

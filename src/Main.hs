@@ -11,9 +11,12 @@ import qualified GitHub.Request as Github
 
 import Control.Monad (forM_)
 import Control.Monad.IO.Class (liftIO)
+import qualified Data.Aeson as A
 import qualified Data.Aeson.Text as A
+import qualified Data.Aeson.Encode.Pretty as A
 import Data.List (intercalate)
 import Data.ByteString.Char8 (ByteString, pack)
+import qualified Data.ByteString.Lazy as LBS
 import Data.Either (lefts, rights)
 import Data.Either.Combinators (mapLeft)
 import Data.Maybe (listToMaybe, fromMaybe)
@@ -34,8 +37,6 @@ import Options.Applicative
 import AnalyzeContent (analyze)
 import Projects (toProjectInfo)
 import Data
-
-import Debug.Trace
 
 
 data Options = Options
@@ -194,11 +195,11 @@ analyzeRepos :: Maybe Auth.Auth -> FilePath -> Vector Github.Repo -> IO ()
 analyzeRepos auth outputDir result = do
     repos <- sequence $ toProjectInfo auth <$> result
     writeProjectsData outputDir repos
-    forM_ repos analyze
+    forM_ repos (analyze outputDir)
 
 
 writeProjectsData :: FilePath -> Vector ProjectInfo -> IO ()
-writeProjectsData outputDir projects =
-  TextIO.writeFile (outputDir </> "projects.json") (A.encodeToLazyText $ projects)
-
-
+writeProjectsData outputDir projects = do
+  let projectsFile = outputDir </> "projects.json"
+  oldProjects <- A.decodeFileStrict projectsFile :: IO (Maybe (Vector ProjectInfo))
+  LBS.writeFile projectsFile (A.encodePretty $ (projects <> fromMaybe mempty oldProjects))

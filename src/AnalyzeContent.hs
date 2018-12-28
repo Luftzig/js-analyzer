@@ -6,6 +6,7 @@
 
 module AnalyzeContent (analyze) where
 
+import Conduit
 import Control.Monad (when)
 import Control.Monad.Base (MonadBase)
 import Control.Monad.Catch (MonadThrow)
@@ -13,36 +14,40 @@ import Control.Monad.IO.Class (liftIO, MonadIO)
 import Control.Monad.Primitive (PrimMonad)
 import Control.Monad.Trans.Resource (MonadResource, MonadUnliftIO, ResourceT)
 
-import Data.Semigroup ((<>))
-
+import Data.Aeson (encode)
 import Data.ByteString (ByteString)
-import qualified  Data.Text as T
+import qualified Data.ByteString.Builder as B
+import Data.ByteString.Lazy (toStrict)
+import qualified Data.Text as T
 
 import Data.Conduit
+import qualified Data.Conduit.Combinators as CC
 import Data.Conduit.Zlib (ungzip)
 import qualified Data.Conduit.Tar as CT
 import qualified Data.Conduit.List as CL
 
+import Data.Semigroup ((<>))
+
 import Network.HTTP.Simple
+import System.Directory (createDirectoryIfMissing)
 import System.IO (FilePath, IO)
+import System.FilePath ((</>), (<.>))
 
 import Data
 import qualified JsAnalyze as JS
 
-import Debug.Trace
 
-
-analyze :: ProjectInfo -> IO ()
-analyze repo = do
-    print $ "Processing " <> projectName repo <> " at " <> T.pack ( show (archiveUrl repo)) <> ": "
-    count <- runConduitRes (
+analyze :: FilePath -> ProjectInfo -> IO ()
+analyze outDir repo = do
+--    print $ "Processing " <> projectName repo <> " at " <> T.pack ( show (archiveUrl repo)) <> ": "
+    createDirectoryIfMissing True $ outDir </> (T.unpack $ projectOwner repo)
+    runConduitRes (
       getArchiveContent (archiveUrl repo)
       .| filterFiles
       .| analyzeFiles
-      .| printErrors
-      .| countJSFiles
+      .| convertErrors
+      .| writeResults outDir repo
       )
-    print count
 
 
 getArchiveContent :: Maybe URL -> ConduitT () CT.TarChunk (ResourceT IO) ()
@@ -63,28 +68,25 @@ filterFiles =
   CT.withEntries getJSFile
 
 
+getJSFile :: Monad m => CT.Header -> ConduitT ByteString (FilePath, ByteString) m ()
+getJSFile header = when (isJsFile header && (not . isMinJs) header) $ do
+    content <- CL.fold (<>) mempty
+    yield (CT.headerFilePath header, content)
+    where
+      isJsFile header = ".js" `T.isSuffixOf` (T.toCaseFold . T.pack . CT.headerFilePath) header
+      isMinJs header = ".min.js" `T.isSuffixOf` (T.toCaseFold . T.pack . CT.headerFilePath) header
 analyzeFiles :: (MonadThrow m, MonadUnliftIO m) => ConduitT (FilePath, ByteString) (Either ParseError FileStats) m ()
 analyzeFiles =
   CL.mapM (liftIO . uncurry JS.analyze)
 
 
-printErrors :: MonadIO m => ConduitT (Either ParseError FileStats) FileStats m ()
-printErrors =
-  CL.mapM printErrors .| CL.catMaybes
-  where
-    printErrors (Left e) = liftIO $ print e >> return Nothing
-    printErrors (Right s) = liftIO $ return $ Just s
+convertErrors :: MonadIO m => ConduitT (Either ParseError FileStats) FileStats m ()
+convertErrors =
+  CL.map (either (\(ParseError file e) -> FailedStats file e) id)
 
 
-countJSFiles :: ConduitT a Void (ResourceT IO) Integer
-countJSFiles =
-  CL.map (const (1 :: Integer))
-    .| CL.fold (+) 0
-
-
-getJSFile :: Monad m => CT.Header -> ConduitT ByteString (FilePath, ByteString) m ()
-getJSFile header = when (isJsFile header) $ do
-    content <- CL.fold (<>) mempty
-    yield (CT.headerFilePath header, content)
-    where
-      isJsFile header = ".js" `T.isSuffixOf` (T.toCaseFold . T.pack . CT.headerFilePath) header
+writeResults :: MonadResource m => FilePath -> ProjectInfo -> ConduitT (FileStats) o m ()
+writeResults outDir repo =
+    CL.map (toStrict . encode)
+    .| CC.intersperse ",\n"
+    .| sinkFile (outDir </> (T.unpack $ projectId repo) <.> "json")
