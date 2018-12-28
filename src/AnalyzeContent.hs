@@ -39,7 +39,7 @@ import qualified JsAnalyze as JS
 
 analyze :: FilePath -> ProjectInfo -> IO ()
 analyze outDir repo = do
---    print $ "Processing " <> projectName repo <> " at " <> T.pack ( show (archiveUrl repo)) <> ": "
+    print $ "Processing " <> projectName repo <> " at " <> T.pack ( show (archiveUrl repo)) <> ": "
     createDirectoryIfMissing True $ outDir </> (T.unpack $ projectOwner repo)
     runConduitRes (
       getArchiveContent (archiveUrl repo)

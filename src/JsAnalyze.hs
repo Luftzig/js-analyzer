@@ -34,6 +34,7 @@ import Analyze.WalkAst
 analyze :: FilePath -> ByteString -> IO (Either ParseError FileStats)
 analyze path content = do
   let numLines = toInteger . length . BC.lines
+  liftIO $ putStrLn $ "Processing file " ++ path
   astText <- extractAndParseFileContent content
   return $ either
     (Left . (ParseError path))
@@ -44,15 +45,14 @@ analyze path content = do
      )
 
 
-extractAndParseFileContent :: MonadUnliftIO m => ByteString -> m (Either Text ByteString)
+extractAndParseFileContent :: MonadUnliftIO m => ByteString -> m (Either Text LBS.ByteString)
 extractAndParseFileContent content = do
     let esprimaP = (esprima { std_in = CreatePipe, std_out = CreatePipe, std_err = CreatePipe })
     (exitCode, results, errors) <- sourceProcessWithStreams
       esprimaP
       (yield content)
+      CC.sinkLazy
       CC.fold
-      CC.fold
-    liftIO $ print results
     return $ if exitCode == ExitSuccess then Right results else Left $ decodeUtf8 errors
 
 
@@ -61,10 +61,10 @@ esprima =
   proc "node" ["js-parser" </> "index.js"]
 
 
-processAst :: ByteString -> Either Text FileStats
+processAst :: LBS.ByteString -> Either Text FileStats
 processAst json =
   let
-    value = eitherDecodeStrict json :: Either String Value
+    value = eitherDecode json :: Either String Value
   in
     case value of
       Right ast -> Right $ countStructures ast
