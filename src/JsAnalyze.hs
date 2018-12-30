@@ -15,10 +15,9 @@ import qualified Data.Text as T
 import Data.Text (Text)
 import Data.Text.Encoding (decodeUtf8)
 import qualified Data.Vector as V
-import GHC.IO.Handle (hClose, hFlush)
 import System.Exit (ExitCode (..))
 import System.FilePath ((</>))
-import System.Process (createProcess, proc, waitForProcess, CreateProcess, StdStream (..))
+import System.Process.Typed (ProcessConfig, byteStringInput, proc, readProcess, setStdin)
 
 import Control.Lens
 import Data.Aeson.Lens
@@ -34,7 +33,7 @@ import Analyze.WalkAst
 analyze :: FilePath -> ByteString -> IO (Either ParseError FileStats)
 analyze path content = do
   let numLines = toInteger . length . BC.lines
-  liftIO $ putStrLn $ "Processing file " ++ path
+--  liftIO $ putStrLn $ "Processing file " ++ path
   astText <- extractAndParseFileContent content
   return $ either
     (Left . (ParseError path))
@@ -45,20 +44,16 @@ analyze path content = do
      )
 
 
-extractAndParseFileContent :: MonadUnliftIO m => ByteString -> m (Either Text LBS.ByteString)
+extractAndParseFileContent :: SBS.ByteString -> IO (Either Text LBS.ByteString)
 extractAndParseFileContent content = do
-    let esprimaP = (esprima { std_in = CreatePipe, std_out = CreatePipe, std_err = CreatePipe })
-    (exitCode, results, errors) <- sourceProcessWithStreams
-      esprimaP
-      (yield content)
-      CC.sinkLazy
-      CC.fold
-    return $ if exitCode == ExitSuccess then Right results else Left $ decodeUtf8 errors
+  let inputStream = byteStringInput $ LBS.fromStrict content
+  (exitCode, result, errors) <- System.Process.Typed.readProcess $ setStdin inputStream esprima
+  return $ if exitCode == ExitSuccess then Right result else Left $ decodeUtf8 $ LBS.toStrict errors
 
 
-esprima :: CreateProcess
+esprima :: ProcessConfig () () ()
 esprima =
-  proc "node" ["js-parser" </> "index.js"]
+  System.Process.Typed.proc "node" ["js-parser" </> "index.js"]
 
 
 processAst :: LBS.ByteString -> Either Text FileStats

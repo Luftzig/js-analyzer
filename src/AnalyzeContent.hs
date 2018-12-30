@@ -89,4 +89,4 @@ writeResults :: MonadResource m => FilePath -> ProjectInfo -> ConduitT (FileStat
 writeResults outDir repo =
     CL.map (toStrict . encode)
     .| CC.intersperse ",\n"
-    .| sinkFile (outDir </> (T.unpack $ projectId repo) <.> "json")
+    .| sinkFile (outDir </> (T.unpack $ projectId repo) <> (show $ projectRevision repo) <.> "json")

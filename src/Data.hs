@@ -23,7 +23,7 @@ data Revision = Commit Text
 
 instance Show Revision where
   show (Commit t) = "#" ++ (show t)
-  show (Tag t) = "tag " ++ (show t)
+  show (Tag t) = "tag:" ++ (show t)
   show DefaultBranchHead = "HEAD"
 
 

@@ -8,6 +8,7 @@ import qualified GitHub.Data.Name as Github
 import qualified GitHub.Data.Repos as Github
 import qualified GitHub.Endpoints.Search as Github
 import qualified GitHub.Endpoints.Repos.Contents as Github
+import qualified GitHub.Endpoints.Repos.Collaborators as Github
 import qualified GitHub.Request as Github
 import GitHub.Data.Definitions (simpleOwnerLogin)
 import GitHub.Data.Request (query)
@@ -22,6 +23,7 @@ import qualified Data.Text as T
 import Data.Text (Text, unpack)
 import Data.Text.Encoding (decodeUtf8, encodeUtf8)
 import Data.Maybe (fromMaybe)
+import qualified Data.Vector as V
 
 import Debug.Trace
 
@@ -32,6 +34,7 @@ toProjectInfo auth repo = do
   revision <- getLatestRevision auth repo
   archiveUri <- getArchiveUri auth repo
   dependencies <- getProjectDependencies auth repo
+  contributors <- getContributorsCount auth repo
   return ProjectInfo
     { projectName = (Github.untagName . Github.repoName) repo
     , projectOwner = (Github.untagName . Github.simpleOwnerLogin . Github.repoOwner) repo
@@ -68,6 +71,8 @@ getLatestRevision auth repo =
     return DefaultBranchHead
 
 
+ownerLogin = Github.simpleOwnerLogin . Github.repoOwner
+
 getProjectDependencies :: Maybe Auth.Auth -> Github.Repo -> IO [Text]
 getProjectDependencies auth repo = do
   result <- Github.contentsFor' auth (Github.simpleOwnerLogin $ Github.repoOwner repo) (Github.repoName repo) "package.json" Nothing
@@ -75,6 +80,14 @@ getProjectDependencies auth repo = do
     Left e -> do print e
                  return []
     Right content -> return $ getDependencies $ getFileContent content
+
+
+getContributorsCount :: Maybe Auth.Auth -> Github.Repo -> IO (Maybe Integer)
+getContributorsCount auth repo = do
+  result <- Github.collaboratorsOn' auth (ownerLogin repo) (Github.repoName repo)
+  return $ case result of
+    Right users -> Just $ toInteger $ V.length users
+    Left _ -> Nothing
 
 
 getFileContent :: Github.Content -> Maybe Text
