@@ -62,8 +62,8 @@ instance FromJSON ProjectInfo where
     id <- o .: "id"
     let projectName  = (snd . breakOn "/") id
     let projectOwner = (fst . breakOn "/") id
-    repoUrl <- o .: "repoUrl"
-    projectRevision <- o .: "projectRevision"
+    repoUrl <- o .: "url"
+    projectRevision <- o .: "revision"
     archiveUrl <- o .: "archiveUrl"
     dependencies <- o .: "dependencies"
     stars <- o .: "stars"
@@ -79,6 +79,7 @@ instance ToJSON ProjectInfo where
     object ["id" .= projectId p
            , "url" .= repoUrl p
            , "revision" .= projectRevision p
+           , "archiveUrl" .= archiveUrl p
            , "dependencies" .= dependencies p
            , "stars" .= stars p
            , "contributors" .= contributors p

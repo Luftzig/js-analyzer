@@ -17,9 +17,9 @@ import qualified Data.Aeson.Encode.Pretty as A
 import Data.List (intercalate)
 import Data.ByteString.Char8 (ByteString, pack)
 import qualified Data.ByteString.Lazy as LBS
-import Data.Either (lefts, rights)
+import Data.Either (either, lefts, rights, fromRight, isLeft)
 import Data.Either.Combinators (mapLeft)
-import Data.Maybe (listToMaybe, fromMaybe)
+import Data.Maybe (listToMaybe, fromMaybe, isNothing)
 import Data.String (fromString)
 import Data.Text (Text, breakOn, intercalate, unpack, lines, splitOn, strip, tail)
 import qualified Data.Text.IO as T
@@ -201,5 +201,6 @@ analyzeRepos auth outputDir result = do
 writeProjectsData :: FilePath -> Vector ProjectInfo -> IO ()
 writeProjectsData outputDir projects = do
   let projectsFile = outputDir </> "projects.json"
-  oldProjects <- A.decodeFileStrict projectsFile :: IO (Maybe (Vector ProjectInfo))
-  LBS.writeFile projectsFile (A.encodePretty $ (projects <> fromMaybe mempty oldProjects))
+  oldProjects <- A.eitherDecodeFileStrict projectsFile :: IO (Either String (Vector ProjectInfo))
+  either (\err -> print ("Failed to read old projects: " ++ err)) (\_ -> mempty) oldProjects
+  LBS.writeFile projectsFile (A.encodePretty $ (projects <> fromRight mempty oldProjects))

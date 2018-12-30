@@ -87,6 +87,10 @@ convertErrors =
 
 writeResults :: MonadResource m => FilePath -> ProjectInfo -> ConduitT (FileStats) o m ()
 writeResults outDir repo =
-    CL.map (toStrict . encode)
-    .| CC.intersperse ",\n"
-    .| sinkFile (outDir </> (T.unpack $ projectId repo) <> (show $ projectRevision repo) <.> "json")
+    let pipe = yield "[\n"
+              *> (CL.map (toStrict . encode)
+              .| CC.intersperse ",\n")
+              *> yield "\n]"
+
+    in
+      pipe .| sinkFile (outDir </> (T.unpack $ projectId repo) <> "-" <> (show $ projectRevision repo) <.> "json")
