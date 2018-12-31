@@ -7,7 +7,7 @@
 module AnalyzeContent (analyze) where
 
 import Conduit
-import Control.Monad (when)
+import Control.Monad (when, forM_)
 import Control.Monad.Base (MonadBase)
 import Control.Monad.Catch (MonadThrow)
 import Control.Monad.IO.Class (liftIO, MonadIO)
@@ -39,15 +39,16 @@ import qualified JsAnalyze as JS
 
 analyze :: FilePath -> ProjectInfo -> IO ()
 analyze outDir repo = do
-    print $ "Processing " <> projectName repo <> " at " <> T.pack ( show (archiveUrl repo)) <> ": "
+    print $ "Processing " <> projectName repo <> ": "
     createDirectoryIfMissing True $ outDir </> (T.unpack $ projectOwner repo)
-    runConduitRes (
-      getArchiveContent (archiveUrl repo)
-      .| filterFiles
-      .| analyzeFiles
-      .| convertErrors
-      .| writeResults outDir repo
-      )
+    forM_ (revisions repo) (runConduitRes . processRevision)
+    where
+      processRevision (Revision{archiveUrl=archive, commitId=cId}) =
+        getArchiveContent (archive)
+          .| filterFiles
+          .| analyzeFiles
+          .| convertErrors
+          .| writeResults outDir repo cId
 
 
 getArchiveContent :: Maybe URL -> ConduitT () CT.TarChunk (ResourceT IO) ()
@@ -85,12 +86,12 @@ convertErrors =
   CL.map (either (\(ParseError file e) -> FailedStats file e) id)
 
 
-writeResults :: MonadResource m => FilePath -> ProjectInfo -> ConduitT (FileStats) o m ()
-writeResults outDir repo =
+writeResults :: MonadResource m => FilePath -> ProjectInfo -> T.Text -> ConduitT (FileStats) o m ()
+writeResults outDir repo commitId =
     let pipe = yield "[\n"
               *> (CL.map (toStrict . encode)
               .| CC.intersperse ",\n")
               *> yield "\n]"
 
     in
-      pipe .| sinkFile (outDir </> (T.unpack $ projectId repo) <> "-" <> (show $ projectRevision repo) <.> "json")
+      pipe .| sinkFile (outDir </> (T.unpack $ projectId repo) <> "-" <> (T.unpack commitId) <.> "json")

@@ -28,26 +28,38 @@ import qualified Data.Vector as V
 import Debug.Trace
 
 import Data
+import Projects.GraphQL
 
 toProjectInfo :: Maybe Auth.Auth -> Github.Repo -> IO ProjectInfo
 toProjectInfo auth repo = do
-  revision <- getLatestRevision auth repo
-  archiveUri <- getArchiveUri auth repo
-  dependencies <- getProjectDependencies auth repo
-  contributors <- getContributorsCount auth repo
-  return ProjectInfo
-    { projectName = (Github.untagName . Github.repoName) repo
-    , projectOwner = (Github.untagName . Github.simpleOwnerLogin . Github.repoOwner) repo
-    , repoUrl = unpack $ (Github.getUrl . Github.repoUrl) repo
-    , projectRevision = revision
-    , archiveUrl =  toMaybe archiveUri
-    , dependencies = dependencies
-    , stars = toInteger . Github.repoStargazersCount $ repo
-    , contributors = Nothing
-    , commits = Nothing
-    , forks = fmap toInteger $ Github.repoForks repo
-    , createdAt = Github.repoCreatedAt repo
-    }
+--  revision <- getLatestRevision auth repo
+--  archiveUri <- getArchiveUri auth repo
+--  dependencies <- getProjectDependencies auth repo
+-- auth repo removed as there are no guarantees we'll get the real number. Should probably collect this manually...
+--  contributors <- getContributorsCount
+--  return ProjectInfo
+--    { projectName = (Github.untagName . Github.repoName) repo
+--    , projectOwner = (Github.untagName . Github.simpleOwnerLogin . Github.repoOwner) repo
+--    , repoUrl = unpack $ (Github.getUrl . Github.repoUrl) repo
+--    , projectRevision = revision
+--    , archiveUrl =  toMaybe archiveUri
+--    , dependencies = dependencies
+--    , stars = toInteger . Github.repoStargazersCount $ repo
+--    , contributors = Nothing
+--    , commits = Nothing
+--    , forks = fmap toInteger $ Github.repoForks repo
+--    , createdAt = Github.repoCreatedAt repo
+--    }
+  let owner = (Github.untagName . Github.simpleOwnerLogin . Github.repoOwner) repo
+  let name =  (Github.untagName . Github.repoName) repo
+  result <- queryProjectInfo auth owner name
+  case result of
+    Right project -> do
+      withDeps <- mapM (getRevisionDependencies auth owner name) (revisions project)
+      return $ project { revisions = withDeps }
+    Left e -> do
+      print e
+      error "Damn"
 
 
 toUrl :: URI -> Maybe URL
@@ -66,28 +78,26 @@ getArchiveUri auth repo =
                   Github.ArchiveFormatTarball
                   Nothing
 
-getLatestRevision :: Maybe Auth.Auth -> Github.Repo -> IO Revision
-getLatestRevision auth repo =
-    return DefaultBranchHead
-
 
 ownerLogin = Github.simpleOwnerLogin . Github.repoOwner
 
-getProjectDependencies :: Maybe Auth.Auth -> Github.Repo -> IO [Text]
-getProjectDependencies auth repo = do
-  result <- Github.contentsFor' auth (Github.simpleOwnerLogin $ Github.repoOwner repo) (Github.repoName repo) "package.json" Nothing
+getRevisionDependencies :: Maybe Auth.Auth -> Text -> Text -> Revision -> IO Revision
+getRevisionDependencies auth owner name rev = do
+  result <- Github.contentsFor' auth (Github.N owner) (Github.N name) "package.json" (Just $ commitId rev)
   case result of
     Left e -> do print e
-                 return []
-    Right content -> return $ getDependencies $ getFileContent content
+                 return rev
+    Right content -> return $ rev {dependencies = getDependencies $ getFileContent content }
 
 
 getContributorsCount :: Maybe Auth.Auth -> Github.Repo -> IO (Maybe Integer)
 getContributorsCount auth repo = do
   result <- Github.collaboratorsOn' auth (ownerLogin repo) (Github.repoName repo)
-  return $ case result of
-    Right users -> Just $ toInteger $ V.length users
-    Left _ -> Nothing
+  case result of
+    Right users -> return $ Just $ toInteger $ V.length users
+    Left e -> do
+      print ("Failed to get contributors" ++ show e)
+      return $ Nothing
 
 
 getFileContent :: Github.Content -> Maybe Text

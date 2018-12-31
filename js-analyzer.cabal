@@ -23,6 +23,7 @@ library
                      , Data
                      , Analyze.WalkAst
                      , Projects
+                     , Projects.GraphQL
                      , JsAnalyze
   default-language:    Haskell2010
   build-depends: base >= 4.7 && < 5
@@ -41,6 +42,7 @@ library
                , resourcet
                , transformers-base >= 0.4.4
                , aeson
+               , aeson-pretty
                , filepath
                , vector
                , directory
@@ -53,6 +55,8 @@ library
                , containers
                , unordered-containers
                , typed-process
+               , wreq
+               , neat-interpolation
 
 
 executable js-analyzer
@@ -60,7 +64,7 @@ executable js-analyzer
   main-is:             Main.hs
   default-language:    Haskell2010
   ghc-options:         -threaded
-  other-modules:       AnalyzeContent, Data, Projects, JsAnalyze, Analyze.WalkAst
+  other-modules:       AnalyzeContent, Data, Projects, JsAnalyze, Analyze.WalkAst, Projects.GraphQL
   build-depends: base
                , js-analyzer
                , github >= 0.19
@@ -91,6 +95,8 @@ executable js-analyzer
                , containers
                , unordered-containers
                , typed-process
+               , wreq
+               , neat-interpolation
 
 
 

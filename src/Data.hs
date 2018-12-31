@@ -16,41 +16,28 @@ type Name = Text
 
 type URL = String
 
-data Revision = Commit Text
-              | Tag Name
-              | DefaultBranchHead
-
-
-instance Show Revision where
-  show (Commit t) = "#" ++ (show t)
-  show (Tag t) = "tag:" ++ (show t)
-  show DefaultBranchHead = "HEAD"
-
+data Revision = Revision
+                  { commitId :: Text
+                  , committedDate :: UTCTime
+                  , archiveUrl :: Maybe URL
+                  , dependencies :: [Text]
+                  } deriving (Show, Generic)
 
 instance ToJSON Revision where
-  toJSON (Commit t) = object ["commit" .= t]
-  toJSON (Tag t) = object ["tag" .= t]
-  toJSON (DefaultBranchHead) = object ["tag" .= ("HEAD" :: Text)]
-
 
 instance FromJSON Revision where
-  parseJSON (Object o) =
-    (Commit <$> o .: "commit")
-    <|> (Tag <$> o .: "tag")
 
 
 data ProjectInfo = ProjectInfo
   { projectName :: Name
   , projectOwner :: Name
+  , revisions :: [Revision]
   , repoUrl :: URL
-  , projectRevision :: Revision
-  , archiveUrl :: Maybe URL
-  , dependencies :: [Text]
   , stars :: Integer
   , contributors :: Maybe Integer
-  , commits :: Maybe Integer
-  , forks :: Maybe Integer
-  , createdAt :: Maybe UTCTime
+  , commits :: Integer
+  , forks :: Integer
+  , createdAt :: UTCTime
   } deriving (Show, Generic)
 
 
@@ -63,9 +50,7 @@ instance FromJSON ProjectInfo where
     let projectName  = (snd . breakOn "/") id
     let projectOwner = (fst . breakOn "/") id
     repoUrl <- o .: "url"
-    projectRevision <- o .: "revision"
-    archiveUrl <- o .: "archiveUrl"
-    dependencies <- o .: "dependencies"
+    revisions <- o .: "revisions"
     stars <- o .: "stars"
     contributors <- o .: "contributors"
     commits <- o .: "commits"
@@ -76,11 +61,9 @@ instance FromJSON ProjectInfo where
 
 instance ToJSON ProjectInfo where
   toJSON p =
-    object ["id" .= projectId p
+    object [ "id" .= projectId p
            , "url" .= repoUrl p
-           , "revision" .= projectRevision p
-           , "archiveUrl" .= archiveUrl p
-           , "dependencies" .= dependencies p
+           , "revisions" .= revisions p
            , "stars" .= stars p
            , "contributors" .= contributors p
            , "commits" .= commits p
