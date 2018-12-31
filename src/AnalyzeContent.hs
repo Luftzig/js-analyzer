@@ -18,6 +18,8 @@ import Data.Aeson (encode)
 import Data.ByteString (ByteString)
 import qualified Data.ByteString.Builder as B
 import Data.ByteString.Lazy (toStrict)
+import Data.Time.Clock (UTCTime)
+import Data.Time.Format (formatTime, defaultTimeLocale)
 import qualified Data.Text as T
 
 import Data.Conduit
@@ -43,12 +45,12 @@ analyze outDir repo = do
     createDirectoryIfMissing True $ outDir </> (T.unpack $ projectOwner repo)
     forM_ (revisions repo) (runConduitRes . processRevision)
     where
-      processRevision (Revision{archiveUrl=archive, commitId=cId}) =
+      processRevision (Revision{archiveUrl=archive, commitId=cId, committedDate=date}) =
         getArchiveContent (archive)
           .| filterFiles
           .| analyzeFiles
           .| convertErrors
-          .| writeResults outDir repo cId
+          .| writeResults outDir repo date
 
 
 getArchiveContent :: Maybe URL -> ConduitT () CT.TarChunk (ResourceT IO) ()
@@ -86,12 +88,12 @@ convertErrors =
   CL.map (either (\(ParseError file e) -> FailedStats file e) id)
 
 
-writeResults :: MonadResource m => FilePath -> ProjectInfo -> T.Text -> ConduitT (FileStats) o m ()
-writeResults outDir repo commitId =
+writeResults :: MonadResource m => FilePath -> ProjectInfo -> UTCTime -> ConduitT (FileStats) o m ()
+writeResults outDir repo commitDate =
     let pipe = yield "[\n"
               *> (CL.map (toStrict . encode)
               .| CC.intersperse ",\n")
               *> yield "\n]"
 
     in
-      pipe .| sinkFile (outDir </> (T.unpack $ projectId repo) <> "-" <> (T.unpack commitId) <.> "json")
+      pipe .| sinkFile (outDir </> (T.unpack $ projectId repo) <> "-" <> (formatTime defaultTimeLocale "%F" commitDate) <.> "json")
