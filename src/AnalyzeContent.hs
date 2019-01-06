@@ -21,6 +21,7 @@ import Data.ByteString.Lazy (toStrict)
 import Data.Time.Clock (UTCTime)
 import Data.Time.Format (formatTime, defaultTimeLocale)
 import qualified Data.Text as T
+import qualified Data.Text.Encoding as T
 
 import Data.Conduit
 import qualified Data.Conduit.Combinators as CC
@@ -32,7 +33,7 @@ import Data.Semigroup ((<>))
 
 import Network.HTTP.Simple
 import System.Directory (createDirectoryIfMissing)
-import System.IO (FilePath, IO)
+import System.IO (FilePath, IO, hPutStr, stderr)
 import System.FilePath ((</>), (<.>))
 
 import Data
@@ -51,6 +52,7 @@ analyze outDir repo = do
           .| analyzeFiles
           .| convertErrors
           .| writeResults outDir repo date
+          `catchC` ((\e -> yield (T.encodeUtf8 $ "Failure in " <> projectName repo <> ": ") .| sinkHandle stderr) :: IOError -> ConduitT FileStats o (ResourceT IO) ())
 
 
 getArchiveContent :: Maybe URL -> ConduitT () CT.TarChunk (ResourceT IO) ()
@@ -78,6 +80,8 @@ getJSFile header = when (isJsFile header && (not . isMinJs) header) $ do
     where
       isJsFile header = ".js" `T.isSuffixOf` (T.toCaseFold . T.pack . CT.headerFilePath) header
       isMinJs header = ".min.js" `T.isSuffixOf` (T.toCaseFold . T.pack . CT.headerFilePath) header
+
+
 analyzeFiles :: (MonadThrow m, MonadUnliftIO m) => ConduitT (FilePath, ByteString) (Either ParseError FileStats) m ()
 analyzeFiles =
   CL.mapM (liftIO . uncurry JS.analyze)

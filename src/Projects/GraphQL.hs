@@ -116,7 +116,7 @@ makeRequestBody owner name =
             count: history(first: 1) {
               totalCount
             }
-            $quarters
+            $selections
           }
         }
       }
@@ -132,20 +132,23 @@ makeRequestBody owner name =
   |]
   )]
   where
-    quarters = T.unlines [ commitsForQuarters (T.pack $ show year) | year <- [2008..2019]]
-    commitsForQuarters year = [text|
-            year_${year}_q1: history(since: "$year-01-01T00:00:00+00:00", until: "$year-03-31T23:59:59+00:00", first: 1) {
+    years = [2018]
+    quarters = ["q4"]
+    quarterStart year "q1" = [text|${year}-01-01T00:00:00+00:00|]
+    quarterStart year "q2" = [text|${year}-04-01T00:00:00+00:00|]
+    quarterStart year "q3" = [text|${year}-07-01T00:00:00+00:00|]
+    quarterStart year "q4" = [text|${year}-10-01T00:00:00+00:00|]
+    quarterEnds year "q1"  = [text|${year}-03-31T23:59:59+00:00|]
+    quarterEnds year "q2"  = [text|${year}-06-31T23:59:59+00:00|]
+    quarterEnds year "q3"  = [text|${year}-09-30T23:59:59+00:00|]
+    quarterEnds year "q4"  = [text|${year}-12-31T23:59:59+00:00|]
+    selection year quarter = let
+      since = quarterStart year quarter
+      until = quarterEnds year quarter
+      in
+        [text|year_${year}_${quarter}: history(since: "$since", until: "$until", first: 1) {
               ...commits
-            }
-            year_${year}_q2: history(since: "$year-04-01T00:00:00+00:00", until: "$year-06-31T23:59:59+00:00", first: 1) {
-              ...commits
-            }
-            year_${year}_q3: history(since: "$year-07-01T00:00:00+00:00", until: "$year-09-30T23:59:59+00:00", first: 1) {
-              ...commits
-            }
-            year_${year}_q4: history(since: "$year-10-01T00:00:00+00:00", until: "$year-12-31T23:59:59+00:00", first: 1) {
-              ...commits
-            }
-    |]
+            }|]
+    selections = T.unlines [selection (T.pack $ show y) q | y <- years, q <- quarters]
 
 githubGraphQLApi = "https://api.github.com/graphql"

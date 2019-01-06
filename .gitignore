@@ -21,3 +21,5 @@ node_modules/
 test/archives/
 
 .idea/
+tests/data
+.#*

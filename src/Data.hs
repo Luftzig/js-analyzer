@@ -99,6 +99,8 @@ data FileStats = FileStats
 
 instance ToJSON FileStats
 
+instance FromJSON FileStats
+
 
 emptyStats :: FileStats
 emptyStats =
