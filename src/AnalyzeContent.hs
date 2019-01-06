@@ -32,6 +32,7 @@ import qualified Data.Conduit.List as CL
 import Data.Semigroup ((<>))
 
 import Network.HTTP.Simple
+import Network.TLS
 import System.Directory (createDirectoryIfMissing)
 import System.IO (FilePath, IO, hPutStr, stderr)
 import System.FilePath ((</>), (<.>))
@@ -47,12 +48,15 @@ analyze outDir repo = do
     forM_ (revisions repo) (runConduitRes . processRevision)
     where
       processRevision (Revision{archiveUrl=archive, commitId=cId, committedDate=date}) =
-        getArchiveContent (archive)
+        (getArchiveContent (archive)
           .| filterFiles
           .| analyzeFiles
           .| convertErrors
-          .| writeResults outDir repo date
-          `catchC` ((\e -> yield (T.encodeUtf8 $ "Failure in " <> projectName repo <> ": ") .| sinkHandle stderr) :: IOError -> ConduitT FileStats o (ResourceT IO) ())
+          .| writeResults outDir repo date)
+          `catchC` handleTLSError `catchC` handleIOError
+      handleError e = yield (T.encodeUtf8 $ "Failure in " <> projectName repo <> ": ") .| sinkHandle stderr
+      handleIOError = handleError :: IOError -> ConduitT () o (ResourceT IO) ()
+      handleTLSError = handleError :: TLSError -> ConduitT () o (ResourceT IO) ()
 
 
 getArchiveContent :: Maybe URL -> ConduitT () CT.TarChunk (ResourceT IO) ()

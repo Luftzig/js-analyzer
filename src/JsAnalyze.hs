@@ -28,7 +28,6 @@ import Data
 import Analyze.WalkAst
 
 
--- Maybe call esprima or acorn parser and parse the result JSON?
 
 analyze :: FilePath -> ByteString -> IO (Either ParseError FileStats)
 analyze path content = do
