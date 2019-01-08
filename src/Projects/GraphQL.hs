@@ -132,7 +132,7 @@ makeRequestBody owner name =
   |]
   )]
   where
-    years = [2018]
+    years = [2018, 2015, 2012, 2009]
     quarters = ["q4"]
     quarterStart year "q1" = [text|${year}-01-01T00:00:00+00:00|]
     quarterStart year "q2" = [text|${year}-04-01T00:00:00+00:00|]

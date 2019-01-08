@@ -58,6 +58,7 @@ library
                , typed-process
                , wreq
                , neat-interpolation
+               , easyplot
 
 
 executable js-analyzer
@@ -99,7 +100,7 @@ executable js-analyzer
                , typed-process
                , wreq
                , neat-interpolation
-
+               , easyplot
 
 
 test-suite spec
