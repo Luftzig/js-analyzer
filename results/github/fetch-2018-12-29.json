@@ -1,0 +1,11 @@
+[
+{"whileCount":0,"forInCount":1,"forEachCount":9,"tag":"FileStats","forCount":1,"mapCount":0,"reduceCount":0,"filterCount":6,"forOfCount":0,"fileName":"github-fetch-96b37eb/fetch.js","linesOfCode":516},
+{"whileCount":0,"forInCount":0,"forEachCount":0,"tag":"FileStats","forCount":0,"mapCount":0,"reduceCount":0,"filterCount":0,"forOfCount":0,"fileName":"github-fetch-96b37eb/prettier.config.js","linesOfCode":1},
+{"whileCount":0,"forInCount":0,"forEachCount":0,"tag":"FileStats","forCount":0,"mapCount":0,"reduceCount":0,"filterCount":0,"forOfCount":0,"fileName":"github-fetch-96b37eb/rollup.config.js","linesOfCode":8},
+{"whileCount":0,"forInCount":0,"forEachCount":0,"tag":"FileStats","forCount":0,"mapCount":0,"reduceCount":0,"filterCount":0,"forOfCount":0,"fileName":"github-fetch-96b37eb/test/karma-worker.config.js","linesOfCode":20},
+{"whileCount":0,"forInCount":0,"forEachCount":0,"tag":"FileStats","forCount":0,"mapCount":1,"reduceCount":0,"filterCount":1,"forOfCount":0,"fileName":"github-fetch-96b37eb/test/karma.config.js","linesOfCode":55},
+{"whileCount":0,"forInCount":0,"forEachCount":0,"tag":"FileStats","forCount":1,"mapCount":0,"reduceCount":0,"filterCount":0,"forOfCount":0,"fileName":"github-fetch-96b37eb/test/server.js","linesOfCode":134},
+{"whileCount":0,"forInCount":0,"forEachCount":7,"tag":"FileStats","forCount":3,"mapCount":1,"reduceCount":0,"filterCount":2,"forOfCount":0,"fileName":"github-fetch-96b37eb/test/test.js","linesOfCode":1467},
+{"whileCount":0,"forInCount":0,"forEachCount":0,"tag":"FileStats","forCount":0,"mapCount":0,"reduceCount":0,"filterCount":0,"forOfCount":0,"fileName":"github-fetch-96b37eb/test/worker-adapter.js","linesOfCode":27},
+{"whileCount":0,"forInCount":0,"forEachCount":0,"tag":"FileStats","forCount":0,"mapCount":0,"reduceCount":0,"filterCount":0,"forOfCount":0,"fileName":"github-fetch-96b37eb/test/worker.js","linesOfCode":38}
+]

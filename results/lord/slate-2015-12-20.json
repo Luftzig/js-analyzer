@@ -1,0 +1,12 @@
+[
+{"whileCount":0,"forInCount":0,"forEachCount":0,"tag":"FileStats","forCount":0,"mapCount":0,"reduceCount":0,"filterCount":0,"forOfCount":0,"fileName":"lord-slate-47cca3d/source/javascripts/all.js","linesOfCode":4},
+{"whileCount":0,"forInCount":0,"forEachCount":0,"tag":"FileStats","forCount":0,"mapCount":0,"reduceCount":0,"filterCount":0,"forOfCount":0,"fileName":"lord-slate-47cca3d/source/javascripts/all_nosearch.js","linesOfCode":3},
+{"whileCount":0,"forInCount":0,"forEachCount":0,"tag":"FileStats","forCount":1,"mapCount":2,"reduceCount":1,"filterCount":0,"forOfCount":0,"fileName":"lord-slate-47cca3d/source/javascripts/app/_lang.js","linesOfCode":162},
+{"whileCount":0,"forInCount":0,"forEachCount":2,"tag":"FileStats","forCount":0,"mapCount":0,"reduceCount":0,"filterCount":1,"forOfCount":0,"fileName":"lord-slate-47cca3d/source/javascripts/app/_search.js","linesOfCode":74},
+{"whileCount":0,"forInCount":0,"forEachCount":0,"tag":"FileStats","forCount":0,"mapCount":0,"reduceCount":0,"filterCount":0,"forOfCount":0,"fileName":"lord-slate-47cca3d/source/javascripts/app/_toc.js","linesOfCode":55},
+{"whileCount":1,"forInCount":0,"forEachCount":0,"tag":"FileStats","forCount":0,"mapCount":0,"reduceCount":0,"filterCount":0,"forOfCount":0,"fileName":"lord-slate-47cca3d/source/javascripts/lib/_energize.js","linesOfCode":169},
+{"whileCount":0,"forInCount":0,"forEachCount":2,"tag":"FileStats","forCount":1,"mapCount":1,"reduceCount":0,"filterCount":0,"forOfCount":0,"fileName":"lord-slate-47cca3d/source/javascripts/lib/_jquery.highlight.js","linesOfCode":108},
+{"whileCount":2,"forInCount":1,"forEachCount":6,"tag":"FileStats","forCount":0,"mapCount":0,"reduceCount":0,"filterCount":1,"forOfCount":0,"fileName":"lord-slate-47cca3d/source/javascripts/lib/_jquery.tocify.js","linesOfCode":1042},
+{"whileCount":0,"forInCount":3,"forEachCount":6,"tag":"FileStats","forCount":3,"mapCount":0,"reduceCount":0,"filterCount":0,"forOfCount":0,"fileName":"lord-slate-47cca3d/source/javascripts/lib/_jquery_ui.js","linesOfCode":566},
+{"whileCount":4,"forInCount":0,"forEachCount":11,"tag":"FileStats","forCount":8,"mapCount":5,"reduceCount":5,"filterCount":2,"forOfCount":0,"fileName":"lord-slate-47cca3d/source/javascripts/lib/_lunr.js","linesOfCode":1910}
+]

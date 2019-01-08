@@ -1,0 +1,5 @@
+[
+{"whileCount":0,"forInCount":6,"forEachCount":4,"tag":"FileStats","forCount":11,"mapCount":3,"reduceCount":2,"filterCount":0,"forOfCount":0,"fileName":"caolan-async-c3d3926/deps/nodeunit.js","linesOfCode":1966},
+{"whileCount":1,"forInCount":1,"forEachCount":4,"tag":"FileStats","forCount":3,"mapCount":3,"reduceCount":2,"filterCount":0,"forOfCount":0,"fileName":"caolan-async-c3d3926/lib/async.js","linesOfCode":700},
+{"whileCount":2,"forInCount":0,"forEachCount":4,"tag":"FileStats","forCount":0,"mapCount":3,"reduceCount":4,"filterCount":4,"forOfCount":0,"fileName":"caolan-async-c3d3926/test/test-async.js","linesOfCode":1650}
+]

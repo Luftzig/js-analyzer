@@ -1,0 +1,14 @@
+[
+{"whileCount":0,"forInCount":0,"forEachCount":0,"tag":"FileStats","forCount":0,"mapCount":2,"reduceCount":0,"filterCount":0,"forOfCount":0,"fileName":"lodash-lodash-d49196f/test/arrays.js","linesOfCode":104},
+{"whileCount":0,"forInCount":0,"forEachCount":0,"tag":"FileStats","forCount":0,"mapCount":2,"reduceCount":1,"filterCount":2,"forOfCount":0,"fileName":"lodash-lodash-d49196f/test/chaining.js","linesOfCode":47},
+{"whileCount":0,"forInCount":0,"forEachCount":7,"tag":"FileStats","forCount":0,"mapCount":5,"reduceCount":4,"filterCount":3,"forOfCount":0,"fileName":"lodash-lodash-d49196f/test/collections.js","linesOfCode":162},
+{"whileCount":0,"forInCount":0,"forEachCount":0,"tag":"FileStats","forCount":0,"mapCount":0,"reduceCount":0,"filterCount":0,"forOfCount":0,"fileName":"lodash-lodash-d49196f/test/functions.js","linesOfCode":77},
+{"whileCount":0,"forInCount":0,"forEachCount":0,"tag":"FileStats","forCount":0,"mapCount":1,"reduceCount":0,"filterCount":0,"forOfCount":0,"fileName":"lodash-lodash-d49196f/test/objects.js","linesOfCode":148},
+{"whileCount":0,"forInCount":0,"forEachCount":3,"tag":"FileStats","forCount":1,"mapCount":4,"reduceCount":0,"filterCount":0,"forOfCount":0,"fileName":"lodash-lodash-d49196f/test/speed.js","linesOfCode":70},
+{"whileCount":1,"forInCount":0,"forEachCount":1,"tag":"FileStats","forCount":0,"mapCount":0,"reduceCount":0,"filterCount":0,"forOfCount":0,"fileName":"lodash-lodash-d49196f/test/utility.js","linesOfCode":42},
+{"whileCount":22,"forInCount":22,"forEachCount":47,"tag":"FileStats","forCount":40,"mapCount":9,"reduceCount":0,"filterCount":9,"forOfCount":0,"fileName":"lodash-lodash-d49196f/test/vendor/jquery.js","linesOfCode":19},
+{"whileCount":3,"forInCount":2,"forEachCount":0,"tag":"FileStats","forCount":7,"mapCount":0,"reduceCount":0,"filterCount":0,"forOfCount":0,"fileName":"lodash-lodash-d49196f/test/vendor/jslitmus.js","linesOfCode":670},
+{"whileCount":5,"forInCount":6,"forEachCount":0,"tag":"FileStats","forCount":8,"mapCount":0,"reduceCount":0,"filterCount":0,"forOfCount":0,"fileName":"lodash-lodash-d49196f/test/vendor/qunit.js","linesOfCode":997},
+{"whileCount":0,"forInCount":3,"forEachCount":16,"tag":"FileStats","forCount":9,"mapCount":9,"reduceCount":4,"filterCount":5,"forOfCount":0,"fileName":"lodash-lodash-d49196f/underscore-min.js","linesOfCode":16},
+{"whileCount":2,"forInCount":3,"forEachCount":16,"tag":"FileStats","forCount":7,"mapCount":9,"reduceCount":4,"filterCount":5,"forOfCount":0,"fileName":"lodash-lodash-d49196f/underscore.js","linesOfCode":616}
+]

@@ -1,0 +1,14 @@
+[
+{"whileCount":0,"forInCount":0,"forEachCount":0,"tag":"FileStats","forCount":0,"mapCount":0,"reduceCount":0,"filterCount":0,"forOfCount":0,"fileName":"adam-p-markdown-here-9afde67/src/chrome/backgroundscript.js","linesOfCode":79},
+{"whileCount":0,"forInCount":0,"forEachCount":0,"tag":"FileStats","forCount":0,"mapCount":0,"reduceCount":0,"filterCount":0,"forOfCount":0,"fileName":"adam-p-markdown-here-9afde67/src/chrome/contentscript.js","linesOfCode":190},
+{"whileCount":6,"forInCount":5,"forEachCount":0,"tag":"FileStats","forCount":11,"mapCount":0,"reduceCount":0,"filterCount":0,"forOfCount":0,"fileName":"adam-p-markdown-here-9afde67/src/common/highlightjs/highlight.js","linesOfCode":4560},
+{"whileCount":0,"forInCount":0,"forEachCount":0,"tag":"FileStats","forCount":2,"mapCount":0,"reduceCount":0,"filterCount":0,"forOfCount":0,"fileName":"adam-p-markdown-here-9afde67/src/common/jsHtmlToText.js","linesOfCode":270},
+{"whileCount":4,"forInCount":0,"forEachCount":0,"tag":"FileStats","forCount":6,"mapCount":0,"reduceCount":0,"filterCount":0,"forOfCount":0,"fileName":"adam-p-markdown-here-9afde67/src/common/markdown-here.js","linesOfCode":503},
+{"whileCount":1,"forInCount":0,"forEachCount":0,"tag":"FileStats","forCount":1,"mapCount":0,"reduceCount":0,"filterCount":0,"forOfCount":0,"fileName":"adam-p-markdown-here-9afde67/src/common/markdown-render.js","linesOfCode":291},
+{"whileCount":8,"forInCount":0,"forEachCount":0,"tag":"FileStats","forCount":2,"mapCount":0,"reduceCount":0,"filterCount":0,"forOfCount":0,"fileName":"adam-p-markdown-here-9afde67/src/common/marked.js","linesOfCode":806},
+{"whileCount":0,"forInCount":10,"forEachCount":0,"tag":"FileStats","forCount":4,"mapCount":0,"reduceCount":0,"filterCount":0,"forOfCount":0,"fileName":"adam-p-markdown-here-9afde67/src/common/options-store.js","linesOfCode":359},
+{"whileCount":0,"forInCount":1,"forEachCount":0,"tag":"FileStats","forCount":0,"mapCount":0,"reduceCount":0,"filterCount":0,"forOfCount":0,"fileName":"adam-p-markdown-here-9afde67/src/common/options.js","linesOfCode":321},
+{"whileCount":0,"forInCount":0,"forEachCount":0,"tag":"FileStats","forCount":0,"mapCount":0,"reduceCount":0,"filterCount":0,"forOfCount":0,"fileName":"adam-p-markdown-here-9afde67/src/firefox/chrome/content/ff-overlay.js","linesOfCode":241},
+{"whileCount":0,"forInCount":2,"forEachCount":0,"tag":"FileStats","forCount":2,"mapCount":0,"reduceCount":0,"filterCount":0,"forOfCount":0,"fileName":"adam-p-markdown-here-9afde67/src/firefox/chrome/content/options.js","linesOfCode":206},
+{"whileCount":0,"forInCount":0,"forEachCount":0,"tag":"FileStats","forCount":0,"mapCount":0,"reduceCount":0,"filterCount":0,"forOfCount":0,"fileName":"adam-p-markdown-here-9afde67/src/firefox/defaults/preferences/prefs.js","linesOfCode":0}
+]

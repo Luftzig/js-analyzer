@@ -1,0 +1,15 @@
+[
+{"whileCount":0,"forInCount":0,"forEachCount":0,"tag":"FileStats","forCount":0,"mapCount":0,"reduceCount":0,"filterCount":0,"forOfCount":0,"fileName":"hakimel-reveal.js-7fd9cfa/grunt.js","linesOfCode":84},
+{"whileCount":2,"forInCount":1,"forEachCount":21,"tag":"FileStats","forCount":11,"mapCount":0,"reduceCount":0,"filterCount":0,"forOfCount":0,"fileName":"hakimel-reveal.js-7fd9cfa/js/reveal.js","linesOfCode":1634},
+{"whileCount":0,"forInCount":0,"forEachCount":0,"tag":"FileStats","forCount":2,"mapCount":0,"reduceCount":0,"filterCount":0,"forOfCount":0,"fileName":"hakimel-reveal.js-7fd9cfa/lib/js/classList.js","linesOfCode":2},
+{"whileCount":0,"forInCount":0,"forEachCount":0,"tag":"FileStats","forCount":0,"mapCount":0,"reduceCount":0,"filterCount":0,"forOfCount":0,"fileName":"hakimel-reveal.js-7fd9cfa/lib/js/html5shiv.js","linesOfCode":7},
+{"whileCount":7,"forInCount":6,"forEachCount":1,"tag":"FileStats","forCount":9,"mapCount":0,"reduceCount":0,"filterCount":0,"forOfCount":0,"fileName":"hakimel-reveal.js-7fd9cfa/plugin/highlight/highlight.js","linesOfCode":14},
+{"whileCount":0,"forInCount":0,"forEachCount":0,"tag":"FileStats","forCount":1,"mapCount":0,"reduceCount":0,"filterCount":0,"forOfCount":0,"fileName":"hakimel-reveal.js-7fd9cfa/plugin/markdown/markdown.js","linesOfCode":37},
+{"whileCount":1,"forInCount":0,"forEachCount":0,"tag":"FileStats","forCount":3,"mapCount":0,"reduceCount":0,"filterCount":0,"forOfCount":0,"fileName":"hakimel-reveal.js-7fd9cfa/plugin/markdown/showdown.js","linesOfCode":62},
+{"whileCount":0,"forInCount":0,"forEachCount":0,"tag":"FileStats","forCount":0,"mapCount":0,"reduceCount":0,"filterCount":0,"forOfCount":0,"fileName":"hakimel-reveal.js-7fd9cfa/plugin/notes-server/client.js","linesOfCode":57},
+{"whileCount":0,"forInCount":0,"forEachCount":1,"tag":"FileStats","forCount":0,"mapCount":0,"reduceCount":0,"filterCount":0,"forOfCount":0,"fileName":"hakimel-reveal.js-7fd9cfa/plugin/notes-server/index.js","linesOfCode":58},
+{"whileCount":0,"forInCount":0,"forEachCount":0,"tag":"FileStats","forCount":0,"mapCount":0,"reduceCount":0,"filterCount":0,"forOfCount":0,"fileName":"hakimel-reveal.js-7fd9cfa/plugin/notes/notes.js","linesOfCode":98},
+{"whileCount":0,"forInCount":0,"forEachCount":0,"tag":"FileStats","forCount":0,"mapCount":0,"reduceCount":0,"filterCount":0,"forOfCount":0,"fileName":"hakimel-reveal.js-7fd9cfa/plugin/postmessage/postmessage.js","linesOfCode":42},
+{"whileCount":0,"forInCount":0,"forEachCount":0,"tag":"FileStats","forCount":0,"mapCount":0,"reduceCount":0,"filterCount":0,"forOfCount":0,"fileName":"hakimel-reveal.js-7fd9cfa/plugin/remotes/remotes.js","linesOfCode":19},
+{"whileCount":0,"forInCount":0,"forEachCount":0,"tag":"FileStats","forCount":0,"mapCount":0,"reduceCount":0,"filterCount":0,"forOfCount":0,"fileName":"hakimel-reveal.js-7fd9cfa/plugin/zoom-js/zoom.js","linesOfCode":251}
+]

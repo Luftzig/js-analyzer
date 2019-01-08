@@ -1,0 +1,10 @@
+[
+{"whileCount":0,"forInCount":0,"forEachCount":0,"tag":"FileStats","forCount":0,"mapCount":0,"reduceCount":0,"filterCount":0,"forOfCount":0,"fileName":"socketio-socket.io-cef1583/client/socket.io.js","linesOfCode":0},
+{"whileCount":0,"forInCount":0,"forEachCount":0,"tag":"FileStats","forCount":0,"mapCount":0,"reduceCount":0,"filterCount":0,"forOfCount":0,"fileName":"socketio-socket.io-cef1583/index.js","linesOfCode":4},
+{"whileCount":0,"forInCount":3,"forEachCount":0,"tag":"FileStats","forCount":1,"mapCount":0,"reduceCount":0,"filterCount":0,"forOfCount":0,"fileName":"socketio-socket.io-cef1583/lib/adapter.js","linesOfCode":122},
+{"whileCount":1,"forInCount":0,"forEachCount":1,"tag":"FileStats","forCount":0,"mapCount":0,"reduceCount":0,"filterCount":0,"forOfCount":0,"fileName":"socketio-socket.io-cef1583/lib/client.js","linesOfCode":178},
+{"whileCount":0,"forInCount":0,"forEachCount":2,"tag":"FileStats","forCount":1,"mapCount":0,"reduceCount":0,"filterCount":0,"forOfCount":0,"fileName":"socketio-socket.io-cef1583/lib/index.js","linesOfCode":234},
+{"whileCount":0,"forInCount":0,"forEachCount":1,"tag":"FileStats","forCount":0,"mapCount":0,"reduceCount":0,"filterCount":0,"forOfCount":0,"fileName":"socketio-socket.io-cef1583/lib/namespace.js","linesOfCode":226},
+{"whileCount":0,"forInCount":0,"forEachCount":1,"tag":"FileStats","forCount":0,"mapCount":0,"reduceCount":0,"filterCount":0,"forOfCount":0,"fileName":"socketio-socket.io-cef1583/lib/socket.js","linesOfCode":383},
+{"whileCount":0,"forInCount":0,"forEachCount":0,"tag":"FileStats","forCount":0,"mapCount":0,"reduceCount":0,"filterCount":0,"forOfCount":0,"fileName":"socketio-socket.io-cef1583/test/socket.io.js","linesOfCode":649}
+]

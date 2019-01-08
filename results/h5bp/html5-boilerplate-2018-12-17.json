@@ -1,0 +1,10 @@
+[
+{"whileCount":0,"forInCount":0,"forEachCount":0,"tag":"FileStats","forCount":0,"mapCount":0,"reduceCount":0,"filterCount":0,"forOfCount":0,"fileName":"h5bp-html5-boilerplate-bad98c4/.eslintrc.js","linesOfCode":26},
+{"whileCount":0,"forInCount":0,"forEachCount":0,"tag":"FileStats","forCount":0,"mapCount":0,"reduceCount":0,"filterCount":0,"forOfCount":0,"fileName":"h5bp-html5-boilerplate-bad98c4/dist/js/main.js","linesOfCode":0},
+{"whileCount":1,"forInCount":0,"forEachCount":0,"tag":"FileStats","forCount":0,"mapCount":0,"reduceCount":0,"filterCount":0,"forOfCount":0,"fileName":"h5bp-html5-boilerplate-bad98c4/dist/js/plugins.js","linesOfCode":24},
+{"whileCount":0,"forInCount":0,"forEachCount":1,"tag":"FileStats","forCount":0,"mapCount":0,"reduceCount":0,"filterCount":0,"forOfCount":0,"fileName":"h5bp-html5-boilerplate-bad98c4/gulpfile.babel.js","linesOfCode":194},
+{"whileCount":0,"forInCount":0,"forEachCount":0,"tag":"FileStats","forCount":0,"mapCount":0,"reduceCount":0,"filterCount":0,"forOfCount":0,"fileName":"h5bp-html5-boilerplate-bad98c4/src/js/main.js","linesOfCode":0},
+{"whileCount":1,"forInCount":0,"forEachCount":0,"tag":"FileStats","forCount":0,"mapCount":0,"reduceCount":0,"filterCount":0,"forOfCount":0,"fileName":"h5bp-html5-boilerplate-bad98c4/src/js/plugins.js","linesOfCode":24},
+{"whileCount":1,"forInCount":0,"forEachCount":0,"tag":"FileStats","forCount":0,"mapCount":0,"reduceCount":0,"filterCount":0,"forOfCount":0,"fileName":"h5bp-html5-boilerplate-bad98c4/test/file_content.js","linesOfCode":83},
+{"whileCount":0,"forInCount":0,"forEachCount":2,"tag":"FileStats","forCount":0,"mapCount":0,"reduceCount":0,"filterCount":1,"forOfCount":0,"fileName":"h5bp-html5-boilerplate-bad98c4/test/file_existence.js","linesOfCode":133}
+]

@@ -1,0 +1,5 @@
+[
+{"whileCount":0,"forInCount":0,"forEachCount":7,"tag":"FileStats","forCount":0,"mapCount":0,"reduceCount":0,"filterCount":4,"forOfCount":0,"fileName":"github-fetch-133bd73/fetch.js","linesOfCode":381},
+{"whileCount":0,"forInCount":0,"forEachCount":3,"tag":"FileStats","forCount":3,"mapCount":0,"reduceCount":0,"filterCount":2,"forOfCount":0,"fileName":"github-fetch-133bd73/test/test.js","linesOfCode":918},
+{"whileCount":0,"forInCount":0,"forEachCount":0,"tag":"FileStats","forCount":0,"mapCount":0,"reduceCount":0,"filterCount":0,"forOfCount":0,"fileName":"github-fetch-133bd73/test/worker.js","linesOfCode":39}
+]

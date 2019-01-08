@@ -1,0 +1,9 @@
+[
+{"whileCount":0,"forInCount":0,"forEachCount":0,"tag":"FileStats","forCount":0,"mapCount":0,"reduceCount":0,"filterCount":0,"forOfCount":0,"fileName":"developit-preact-d847cfc/karma.conf.js","linesOfCode":40},
+{"whileCount":0,"forInCount":0,"forEachCount":0,"tag":"FileStats","forCount":0,"mapCount":0,"reduceCount":0,"filterCount":0,"forOfCount":0,"fileName":"developit-preact-d847cfc/rollup.config.js","linesOfCode":12},
+{"whileCount":3,"forInCount":6,"forEachCount":0,"tag":"FileStats","forCount":13,"mapCount":6,"reduceCount":0,"filterCount":0,"forOfCount":0,"fileName":"developit-preact-d847cfc/src/preact.js","linesOfCode":1050},
+{"whileCount":0,"forInCount":0,"forEachCount":0,"tag":"FileStats","forCount":0,"mapCount":0,"reduceCount":0,"filterCount":0,"forOfCount":0,"fileName":"developit-preact-d847cfc/test/browser/render.js","linesOfCode":399},
+{"whileCount":0,"forInCount":0,"forEachCount":0,"tag":"FileStats","forCount":0,"mapCount":0,"reduceCount":0,"filterCount":0,"forOfCount":0,"fileName":"developit-preact-d847cfc/test/node/index.js","linesOfCode":1},
+{"whileCount":0,"forInCount":0,"forEachCount":0,"tag":"FileStats","forCount":0,"mapCount":0,"reduceCount":0,"filterCount":0,"forOfCount":0,"fileName":"developit-preact-d847cfc/test/shared/exports.js","linesOfCode":23},
+{"whileCount":0,"forInCount":0,"forEachCount":0,"tag":"FileStats","forCount":0,"mapCount":0,"reduceCount":0,"filterCount":0,"forOfCount":0,"fileName":"developit-preact-d847cfc/test/shared/h.js","linesOfCode":107}
+]

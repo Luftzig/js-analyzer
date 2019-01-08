@@ -1,0 +1,10 @@
+[
+{"whileCount":1,"forInCount":1,"forEachCount":1,"tag":"FileStats","forCount":4,"mapCount":0,"reduceCount":0,"filterCount":1,"forOfCount":0,"fileName":"zenorocha-clipboard.js-6802a86/dist/clipboard.js","linesOfCode":978},
+{"whileCount":0,"forInCount":0,"forEachCount":0,"tag":"FileStats","forCount":0,"mapCount":0,"reduceCount":0,"filterCount":0,"forOfCount":0,"fileName":"zenorocha-clipboard.js-6802a86/karma.conf.js","linesOfCode":31},
+{"whileCount":0,"forInCount":0,"forEachCount":0,"tag":"FileStats","forCount":0,"mapCount":0,"reduceCount":0,"filterCount":0,"forOfCount":0,"fileName":"zenorocha-clipboard.js-6802a86/package.js","linesOfCode":12},
+{"whileCount":0,"forInCount":0,"forEachCount":0,"tag":"FileStats","forCount":0,"mapCount":0,"reduceCount":0,"filterCount":2,"forOfCount":0,"fileName":"zenorocha-clipboard.js-6802a86/src/clipboard-action.js","linesOfCode":204},
+{"whileCount":0,"forInCount":0,"forEachCount":1,"tag":"FileStats","forCount":0,"mapCount":0,"reduceCount":0,"filterCount":0,"forOfCount":0,"fileName":"zenorocha-clipboard.js-6802a86/src/clipboard.js","linesOfCode":135},
+{"whileCount":0,"forInCount":0,"forEachCount":0,"tag":"FileStats","forCount":0,"mapCount":0,"reduceCount":0,"filterCount":0,"forOfCount":0,"fileName":"zenorocha-clipboard.js-6802a86/test/clipboard-action.js","linesOfCode":243},
+{"whileCount":0,"forInCount":0,"forEachCount":0,"tag":"FileStats","forCount":0,"mapCount":0,"reduceCount":0,"filterCount":0,"forOfCount":0,"fileName":"zenorocha-clipboard.js-6802a86/test/clipboard.js","linesOfCode":132},
+{"whileCount":0,"forInCount":0,"forEachCount":0,"tag":"FileStats","forCount":0,"mapCount":0,"reduceCount":0,"filterCount":0,"forOfCount":0,"fileName":"zenorocha-clipboard.js-6802a86/webpack.config.js","linesOfCode":45}
+]

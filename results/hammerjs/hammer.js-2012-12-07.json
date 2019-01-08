@@ -1,0 +1,5 @@
+[
+{"whileCount":1,"forInCount":3,"forEachCount":0,"tag":"FileStats","forCount":4,"mapCount":0,"reduceCount":0,"filterCount":0,"forOfCount":0,"fileName":"hammerjs-hammer.js-10b147b/hammer.js","linesOfCode":830},
+{"whileCount":0,"forInCount":0,"forEachCount":1,"tag":"FileStats","forCount":1,"mapCount":0,"reduceCount":0,"filterCount":0,"forOfCount":0,"fileName":"hammerjs-hammer.js-10b147b/jquery.hammer.js","linesOfCode":26},
+{"whileCount":0,"forInCount":0,"forEachCount":1,"tag":"FileStats","forCount":0,"mapCount":0,"reduceCount":0,"filterCount":0,"forOfCount":0,"fileName":"hammerjs-hammer.js-10b147b/jquery.specialevent.hammer.js","linesOfCode":140}
+]

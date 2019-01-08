@@ -1,0 +1,9 @@
+[
+{"whileCount":0,"forInCount":0,"forEachCount":0,"tag":"FileStats","forCount":0,"mapCount":0,"reduceCount":0,"filterCount":0,"forOfCount":0,"fileName":"socketio-socket.io-abe2394/examples/chat/index.js","linesOfCode":75},
+{"whileCount":0,"forInCount":0,"forEachCount":0,"tag":"FileStats","forCount":1,"mapCount":0,"reduceCount":0,"filterCount":1,"forOfCount":0,"fileName":"socketio-socket.io-abe2394/examples/chat/public/main.js","linesOfCode":266},
+{"whileCount":0,"forInCount":3,"forEachCount":1,"tag":"FileStats","forCount":1,"mapCount":0,"reduceCount":0,"filterCount":0,"forOfCount":0,"fileName":"socketio-socket.io-abe2394/lib/client.js","linesOfCode":251},
+{"whileCount":0,"forInCount":2,"forEachCount":2,"tag":"FileStats","forCount":1,"mapCount":0,"reduceCount":0,"filterCount":0,"forOfCount":0,"fileName":"socketio-socket.io-abe2394/lib/index.js","linesOfCode":386},
+{"whileCount":0,"forInCount":0,"forEachCount":1,"tag":"FileStats","forCount":0,"mapCount":0,"reduceCount":0,"filterCount":0,"forOfCount":0,"fileName":"socketio-socket.io-abe2394/lib/namespace.js","linesOfCode":272},
+{"whileCount":0,"forInCount":0,"forEachCount":1,"tag":"FileStats","forCount":0,"mapCount":0,"reduceCount":0,"filterCount":0,"forOfCount":0,"fileName":"socketio-socket.io-abe2394/lib/socket.js","linesOfCode":470},
+{"whileCount":0,"forInCount":0,"forEachCount":0,"tag":"FileStats","forCount":0,"mapCount":0,"reduceCount":0,"filterCount":0,"forOfCount":0,"fileName":"socketio-socket.io-abe2394/test/socket.io.js","linesOfCode":2166}
+]
