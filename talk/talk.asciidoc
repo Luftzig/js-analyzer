@@ -1,0 +1,336 @@
+= Does JavaScript Adopts Functional Programming?
+:Author: Yoav Luft
+:Email:  <yoav.luft@gmail.com>
+
+Hello! My name is Yoav Luft and today I'm going to talk about whether the JavaScript community adopts functional programming or not. In this talk I'll present preliminary results from an on-going research I'm conducting under the supervision of Prof. Feitelson from the Hebrew University of Jerusalem. The in this talk I'll include other material not from the research, and any mistakes or misinterpretations are my own only.
+
+The talk would be divided into 4 parts:
+
+. Why should we care about JavaScript?
+. What "adopting functional programming" even means?
+. Where is the proof?
+and finally,
+. What's next
+
+But before we'll lounge?? into the talk, allow me to introduce myself:
+
+I'm Yoav Luft, born and raised in Israel, currently living with my partner Dafna in Stockholm Sweden. I've have been programming professionally for the last 15 years, working mostly with web applications but also with games, embedded systems and other bit'n'fits??. Other than programming itself, I'm also involved in the programming community as much as I can. In Israel I've founded "FLIP", the first functional programming conference in Israel, now preparing for it's second iteration. I've organized the Elm users group meetups for a while, and I was part of the organizing team of "HackExtend", a diversity centered hackathon founded by my partner Dafna and friends. I currently work for the digital agency "Prototyp" where we specialize out-of-the-ordinary projects.
+
+Let's start.
+
+== Why should we care about JavaScript?
+
+
+Why should we even care about JavaScript? And especially, why should we talk about it in a functional programming conference?
+
+To cut a long story short: I was scollded for using functional programming style in JavaScript and this is my path to revenge! OK, I might be exegerating a little bit...
+
+=== The Past and Present of Javascript
+
+Let's start with a brief history of JavaScript: Javascript was created at netscape in 1995 after Brenden Eich, who was originally hired to integrate Scheme into the Netscape Navigator, created a prototype in 10 days. It uses a curly-braces like syntax because management had decided that they want a Java-like programming language. It's goal was to allow running programs in a web-browser, making web pages interactive, and allowing for a ubiquitous platform.
+
+Javascript was created with imperative structural syntax similar to C, using control structures such as if-else blocks, while and for loops. It used function level variable scoping with some weird global scoping rules. It is a universally typed-languages, aka "dynamically" typed, but also supports some version of object oriented structuring of data using prototypical inheritance. It uses the hashmap as its fundamental data-type, but also treats functions as first-class citizens, which means that right from the start many API could receive and return functions. It uses late-binding, and allows delegation by the use of the "this" keyword, a feature notoriously confusing for programs who come from other imperative-object-oriented languages such as Java. Ölbaum[https://twitter.com/oscherler/status/660049264903643136?lang=en]
+
+Being supported on practically all web browsers, and also being a common backend program using interpreters such as Node.js has made Javascript extremely popular. In Stackoverflow's yearly survey of 2018, Javascript was the popular programming language with 69% of respondents claiming knowledge of the language [https://insights.stackoverflow.com/survey/2018/#most-popular-technologies]. It held this position for the last 6 years. The top 3 most popular frameworks in that same survey are all Javascript frameworks, with Node.js in the lead, which is a framework used for backend development.
+
+According the website SimilarTech, node.js is the 4 most popular server framework, after PHP, ASP.net and Ruby on Rails. [https://www.similartech.com/categories/framework]. On Github, javascript has been the number one programming language for the last 4 years [https://octoverse.github.com/projects#languages]. Love it or hate it, being the only programming language supported by all web-browsers means that Javascript's popularity is forced upon us.
+
+But then again, why should we care, when discussing Javascript in the context of functional programming? First and foremost, we should note that javascript is a very welcoming language for the flexible functional programmer: It supports anonymous functions and closures, uses continuation passing and structured modeling of asynchronous code quite often; and it's repeadly evolving standard includes support for things such as shorthand notation for anonymous functions (already commonly used), variable destructuring, constant references, generator functions, and there are pending proposals for tail-call optimization, pipe-operator, partial application syntax and pattern matching.
+
+It appears that many members of the EMCA Technical Commitee 39, the commitee in charge of the standard used by javascript implementations, would like to encourage more of functional programming style in javascript. As people interested in functional programming, I can only awesome that we would all like to use familiar and beloved programming style over an imperative, out-styled, and more appearently more error prone programming style. This is especially true if our daily work requires writing code that would run on web browsers.
+
+== What does "Adopting functional programming" even means?
+
+So, what do I mean, exactly, when I ask about "adopting functional programming"? We can break this statement to two important parts:
+
+[big overline]#Adopting# {nbsp} {nbsp} [big overline]#functional programming#
+
+Let's start with "adopting"
+
+=== Adopting
+
+[quote, Merriam-Webster Dictionary, https://www.merriam-webster.com/dictionary/adopt]
+----
+
+*adopt verb*
+\ ə-ˈdäpt  \
+adopted; adopting; adopts
+Definition of adopt
+transitive verb
+
+1 : to take by choice into a relationship
+especially : to take voluntarily (a child of other parents) as one's own child
+2 : to take up and practice or use
+adopted a moderate tone
+3 : to accept formally and put into effect
+adopt a constitutional amendment
+4 : to choose (a textbook) for required study in a course
+5 : to sponsor the care and maintenance of
+adopt a highway
+----
+
+So in adopting some programming style we imply two things:
+
+. Functional programming was not popular, or formally accepted in Javascript
+. It is now becoming more popular, or being formally accepted
+
+So in order for me to show that Javascript is adopting anything at all, I should at first demonstrate that it was not always popular. Then, I would have to demonstrate that it becomes more popular today.
+
+Piece of cake!
+
+=== Functional Programming
+
+But let's look at the second part of my statement: *Functional programming*.
+
+==== How much is javascript functional programming
+
+What is, exactly, functional programming? How can we define it, and how can we turn such definition to a concrete test cases that we can use to determine "how much" Javascript is functional programming?
+
+When in doubt regarding definitions, I do what every millennial does: I look it up in wikipedia. The wikipedia definition was a bit mouthful so I've edited out some bits:
+
+[quote, Wikipedia]
+----
+In computer science, functional programming is a programming paradigm—a style of building the structure and elements of computer programs—that treats [underline]#computation as the evaluation of mathematical functions# and [underline]#avoids changing-state and mutable data#. It is a [underline]#declarative programming paradigm#, which means programming is done with expressions or declarations[1] instead of statements. In functional code, the output value of a function depends only on the arguments that are passed to the function, so calling a function f twice with the same value for an argument x produces the same result f(x) each time[...]
+----
+
+Other definitions I found mostly repeated everything stated above, but I would like to note the definition from the Haskell wiki which states that "[...] the best way to understand functional programming is to learn the basics of one of the functional programming languages (learn Haskell)."
+
+I've underlined some key elements of the definition, which are:
+
+. Computation as the evaluation of mathematical functions
+. Avoids changing-state and mutable-data
+. Declarative programming paradigm
+
+==== Criteria
+
+Let's see if we can turn them into criteria for estimating how "functional" is a language or a piece of code.
+
+Let's start with "Computation as teh evaluation of mathematical functions". What are "mathematical functions" in this context? Again, from wikipedia:
+
+[quote, Wikipedia]
+----
+Intuitively, a function is a process that associates to each element of a set X a unique element of a set Y.
+----
+
+OK... I'm not sure how to apply this to the evaluation of a piece of code. Let's try some other definition, such as
+
+[quote, Math Insight, https://mathinsight.org/definition/function]
+----
+A technical definition of a function is: a relation from a set of inputs to a set of possible outputs where each input is related to exactly one output.
+----
+
+OK! That's more tangible! Let's try and formalize this to a criterion:
+
+----
+A piece of code is more "functional programming" if it uses more mathematical functions.
+
+A mathematical function is such function that it's output depends entirely on it's arguments.
+----
+
+While simple, alas, determining it for arbitrary Javascript code was a bit out of scope for my research.
+
+==== Avoid changing state and mutable-data
+
+I think this one is both simple and complex at the same time. Mutable data is obvious: data that is changed during the runtime of the program, and changing state means roughly the same thing. That's simple. The complex part is that if our program is to do anything interesting at all, some state much change. As in the case of the most common use for Javascript, it will mutate the state and data of the representation of a web-page. How can we separate the essential mutations from those done as part of an imperative style programming?
+
+Luckily for us, this one is simpler: Many projects use 3rd party packages to provide immutable data structures. Javascript also add the "const" keyword for block-scoped immutable reference, and the `Object.freeze()` API for making objects immutable at runtime. All three can be good and easy gather indicators for how immutability is common in javascript.
+
+==== Declarative Programming Paradigm
+
+And last but not least, we can look at whether projects adopt a declarative style of programming. Again, a definition is in order:
+
+[quote, Wikipedia]
+----
+a style of building the structure and elements of computer programs—that expresses the logic of a computation without describing its control flow.
+----
+
+While this might sound as vague as the previous definitions, I find that the last bit in there is key:
+
+[quote]
+----
+[...] without describing its control flow.
+----
+
+Javascript, being a language that uses C style imperative structure, comes with a nice set of control flow structures:
+
+.While Loops
+[source, javascript]
+----
+while (condition) {
+  doAction()
+}
+
+do {
+  action()
+} while (condition)
+----
+
+Not one, not two, but three different kinds of for loops:
+
+.For Loops
+[source, javascript]
+----
+for (var i = 0; i < size; i++) {
+  use(i)
+}
+for (var property in object) {
+  use(property)
+}
+for (var index of array) {
+  use(index)
+}
+----
+
+I will not go into the details of what are the differences between the two last for loops. It is not that important.
+
+In addition, javascript supports if-else statements, switch statements and labels, which are just a different name to C's good old GOTO statements.
+
+.If-else
+[source, javascript]
+----
+if (condition) {
+  doSomething()
+} else {
+  doSomethingElse()
+}
+----
+
+.Switch statement
+[source, javascript]
+----
+switch (response) {
+  case "yes":
+    return true
+  case "no":
+    return false
+  default:
+    return undefined
+}
+----
+
+NOTE: Undefined is javascript's special way to spice up the old billion dollar mistake. Why use just "null" for no-value when you can also use "undefined"?
+
+Now, how would declarative piece of javascript code would look like? It would avoid control flow structures, but which? Since Javascript's expression version of the If statement, the trianary operator, is again, inspired by C, it is very terse and a bit difficult to read. Switch statements are still being used as a poor man's pattern matching, and there is no standardized alternative for them. Labels are rarely seen, so we are left with looping constructs.
+
+Luckily for us, looping constructs do have good alternatives: The javascript Array object offers 4 familiar and useful functions: `map`, `filter`, `forEach` and `reduce`. Here's a small examples of some of them:
+
+.Iteration functions
+|===================
+| Imperative  | Declarative
+
+a|
+[source, javascript]
+----
+var result
+for (var i of array) {
+  result[i] = f(array[i])
+}
+----
+
+a|
+[source, javascript]
+----
+var result = array.map(f)
+----
+
+a|
+[source, javascript]
+----
+var accumulator
+for (var i of array) {
+  accumulator = f(accumulator, array[i])
+}
+
+a|
+[source, javascript]
+----
+var accumulated = array.reduce(f)
+----
+
+|===================
+
+These functions are built in as part of the Array API, and they have common alternative versions in utility libraries such as `underscore`, `lodash` and `Ramda`. Combined with some built functions from the `Object` class, such as `Object.keys` which returns an array of all keys, they are complete enough to represent most, if not all, iteration constructs required by javascript developers.
+
+Because of those properties I've decided that looping constructs are the best candidates for measuring how much does Javascript adopts functional programming.
+
+== Where is the Proof?
+
+I hope I did not bored you with this prolonged introduction. Armed with the understanding that while the question of whether Javascript goes functional or not is complicated, the question of whether it becomes more declarative is easier to answer. Now comes the search for data.
+
+=== Method
+
+After consulting with Prof. Feitelson, I've decided to focus on projects which are:
+
+. Open source
+. Have a lot of contributors
+. Have been around for a while
+
+By looking at how these projects evolve, we can gain insights into general trends in Javascript.
+I've decided to use Github's 100 most popular javascript projects, such as:
+
+- React by facebook,
+- three.js
+- Vue.js
+- Atom code editor
+
+etc. Next, I've gathered metadata on each project, including it's number of stargazers and it's number of forks. Forks are a good metric for contribution, because in the Github methodology each contributor must first fork the project, make he's or she's changes on the forked repository and then ask for those changes to be merged.
+Finally, I've looked at the actual code. By selecting the last commit in each of the years 2009, 2012, 2015, and 2018, I could see some trends in the overall Javascript programming style.
+Once the commits where selected, I've downloaded a snapshot of each repository at each of the target commits, and sent the content of the snapshot to a processing pipeline. The processing pipeline uses the Esprima parser to generate an Abstract Syntax Tree for each file, which was then sent searched for specific patterns.
+
+[mermaid]
+....
+graph LR
+  List[List of repositories] -> Metadata
+  Metadata -> Out(())
+  Metadata -> Commits
+  Commits -> Snapshots
+  Snapshots -> AST
+  AST -> Count[Count Patterns]
+....
+
+==== Patterns
+
+For each files of valid Javascript, I've looked for the following patterns:
+
+- for loop `for (var i = 0; i < size; i++) {...}`
+- for..in loops `for (var i in object) {...}`
+- for..of loops `for (var i of array) {...}`
+- while and do-while loops `while (cond) {...}`
+- forEach calls: `arr.forEach(f); _.forEach(arr, f); _.each(arr, f)`
+- map calls and aliases such as `map`, `pluck`, `flatMap`, `collect`
+- filter calls and aliases: `filter`, `select`, `reject`, `where`
+- reduce calls and aliases: `reduce`, `reduceRight`, `foldl`, `foldr`
+
+After filtering some problematic repositories, I moved into analyzing the results.
+
+=== Results
+
+Let's start with a short survey of the repositories:
+
+==== Repositories
+
+.Repositories in Each Sampled year
+image::images/num_projects_sample_year.png[]
+
+We can see in this graph that out of the hundred top rated repositories only 79 had meaningful data in at the end of 2018, and as for 2009, only 3 had any data at all.
+
+.Repositories by Age
+image::images/created_year_cdf.png[]
+
+This brings the question of the age of the repositories. We can see that over half of them were created on Github at 2013 or later. This means they have at least 5 years of development in the public, which I find to be very important. You can also see that there are more repositories here than in the previous graph. This is due to two factors: First, I've collected metadata for repositories that turned out to have no useful code in them; Second, some projects might have stoped development, so no commits were found in the 2018 sample.
+
+How large were the projects?
+
+.Lines of code Per Sample
+image::images/loc_files_per_sample_year.png[]
+
+These two graphs show the total number of parsed Javascript files in each sampled batch, and the sum of lines of code for each sample. We can see that we're dealing with magnitude of 3 million lines of code. We can also witness the rapid growth of Javascript from 2012 to 2015, almost tripling the number of lines of code, while only doubling the number of files. We can see that from 2015 to 2018 the number of lines of code grows more slowly, but the number of files keeps on growing steadily. This is an indication that code is broken into smaller files, maybe due to refactoring of the projects? It is difficult to say conclusively.
+
+Next, we'll look at the how common are different code constructs in different samples:
+
+.Control Constructs per Lines of Code in Each Sample
+image::images/constructs_loc_per_year.png[]
+
+Now, the first interesting thing we can notice is that the ratio of control constructs to lines of code is declaining. This teaches us that most new or refactored code is not control flow constructs or looping functions. This shouldn't suprise us, control flow constructs are only a certain percent of the code.
+
+Looking
