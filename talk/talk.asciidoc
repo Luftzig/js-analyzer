@@ -328,9 +328,23 @@ These two graphs show the total number of parsed Javascript files in each sample
 
 Next, we'll look at the how common are different code constructs in different samples:
 
-.Control Constructs per Lines of Code in Each Sample
-image::images/constructs_loc_per_year.png[]
+.Number of Iteration Constructs in Each Year Sample
+image::images/num_constructs_year.png[]
 
-Now, the first interesting thing we can notice is that the ratio of control constructs to lines of code is declaining. This teaches us that most new or refactored code is not control flow constructs or looping functions. This shouldn't suprise us, control flow constructs are only a certain percent of the code.
+Some orientation for this graph: This is the stacked count of iteration constructs extracted from all projects, plot as year of the project snapshot used. Below the green line are the declarative constructs, from top: forEach, reduce, map and filter. Above the green line are the imperative constructs, from top: while, for..of, for..in and C-style for.
 
-Looking
+We can notice that from 2015 to 2018 the total number of iteration constructs had stayed roughly the same, but we already know that the amount of code had increased. We can also see that the declarative part is slightly raising, and also that C-style for loops are the most popular interation construct.
+
+Let's look at the same data normalized by the number of lines of code in each sample:
+
+.Number of Iteration Construct per Lines of Code
+image::images/percent_constructs_year.png[]
+
+In this graph it becomes obvious that as time advances, there are less constructs in general as time advances. Is that because projects use API which are even more high-level than the ones I'm sampling, or is because more code is dedicated to configurations and simpler business logic? Finally, we can see that while the total number of iteration constructs shrink, the part of the declarative constructs shrinks more slowly. Let's have a look at the relative amount of each construct compared to the others:
+
+.Percentage of Iteration Constructs over Years
+image::images/dist_constructs_year.png[]
+
+Now, here we can see an obvious trend: declarative iteration constructs are on the rise compared to their imperative counterparts. Still, they are only slightly more that 40% of total constructs use, with C-style for loops still in the lead with 34% of all constructs found. While loops are slowly disappearing, dropping from 13% to just 9.6% over the last 6 years, while the use of `map` is slowly on the rise. Surprisngly enough, the use of reduce, while rare, is quite constants, being around 1% of all constructs over all samples.
+
+It seems like this supports the idea that javascript is moving to more declarative iteration constructs, but it seems like this process is not as fast as my original intuition suggested. Let's try and look what kind of projects change the most.
