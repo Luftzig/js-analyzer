@@ -462,7 +462,7 @@ For 66 of my 90 sampled projects (which might include projects with empty sample
 that we can look on the change of these projects both individually and as a group.
 
 .Ratio of Declarative Iterations per Project over Samples
-image::images/decl_ratio_per_project_over_time.png
+image::images/decl_ratio_per_project_over_time.png[]
 
 This graph is a bit difficult to follow, considering the amount of data in it. For each project in each sample I took
 the number of declarative iteration constructs and divided it by the number of total iteration constructs for that
@@ -482,7 +482,7 @@ top declarative projects:
 Let's look at the number of forks a project has and it's "declarative ratio" index:
 
 .Declarative Ratio by Number of Project Forks
-image::images/declarative_by_forks.png
+image::images/declarative_by_forks.png[]
 
 We can see that more forks are anti-correlated with the project's "Declarative Index" that we defined before. Not the
 most promising data for us.
@@ -490,7 +490,7 @@ most promising data for us.
 Let's look at the age of the project:
 
 .Declarative Ratio by Project Age in Years
-image::images/declarative_by_age.png
+image::images/declarative_by_age.png[]
 
 That's interesting! We can see that there's a slight negative correlation between project age and it's "declarative
 index". That means that the newer the project, the more likely it is to prefer a declarative style. In fact, we can see
@@ -537,7 +537,7 @@ NOTE: Helper libraries provide high level API over data structures, for example 
 Haskell and Elm
 
 .Helper Libraries Use
-image::images/helper_libs.png
+image::images/helper_libs.png[]
 
 Well, we can see that helper libs have definetely became more popular over the years, but they are still being used by
 only a quarter of our sample.
