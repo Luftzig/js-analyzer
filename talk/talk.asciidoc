@@ -477,4 +477,117 @@ quite obvious, moving from a 0.4 ratio to 0.6 ratio over the last 6 years.
 Is there anything that can predict whether a project will choose or turn to a more declarative style? Let's look at the
 top declarative projects:
 
-...
+==== Project Attributes
+
+Let's look at the number of forks a project has and it's "declarative ratio" index:
+
+.Declarative Ratio by Number of Project Forks
+image::images/declarative_by_forks.png
+
+We can see that more forks are anti-correlated with the project's "Declarative Index" that we defined before. Not the
+most promising data for us.
+
+Let's look at the age of the project:
+
+.Declarative Ratio by Project Age in Years
+image::images/declarative_by_age.png
+
+That's interesting! We can see that there's a slight negative correlation between project age and it's "declarative
+index". That means that the newer the project, the more likely it is to prefer a declarative style. In fact, we can see
+that projects created at the last 5 years use declarative iterations 63% of the time, in average, compared to 51% for
+older projects.
+
+What about the popularity of the project, represented by the number of "stargazers"? First, it is strongly correlated
+with number of forks
+
+.Forks vs Stargazers
+images::images/forks_vs_stars.png
+
+So intuitively, I would expect it to be similar to the relation between the declarative index and the number of forks.
+Let's see:
+
+.Declarative Ratio by Stars
+images::images/declarative_by_stars.png
+
+Interestingly enough, the regression line is flat! But I wouldn't put to much meaning into this graph, because being a
+stargazer of a project doesn't have some inherent well understood meaning, similar to a "like" on twitter or facebook.
+
+Finally, let's see how the number of contributors correlates with the projects "declarative index":
+
+.Declarative Ratio by Number of Contributors
+images::images/declarative_by_contributors.png
+
+Word of caution: I scraped this data directly from each projects Github page, and I'm not sure exactly what is the
+metric that they use. It might be the number of contributors in the last year, month, or the entire history of the
+project. We can only hope and assume that this metric is consistent.
+
+From the number of contributors we can see that there is some correlation between more contributors and more declarative
+style of code. This can might imply that the majority of javascript programmers prefer a declarative style of coding.
+
+=== What About Functional Programming
+
+As for the question of functional programming as a whole, while it is more complicated, I managed to find some data that
+can improve our understanding.
+
+For example, from analyzing the dependencies of our sample projects, we can try and learn how many use helper libraries
+that make functional programming in javascript easier, such as "underscore", "lodash" and "Ramda"
+
+NOTE: Helper libraries provide high level API over data structures, for example a "groupby" function over fields, or
+"mapValues" that can be used to map object values. Some of them, like Ramda, use conventions popular in languages such
+Haskell and Elm
+
+.Helper Libraries Use
+image::images/helper_libs.png
+
+Well, we can see that helper libs have definetely became more popular over the years, but they are still being used by
+only a quarter of our sample.
+
+==== Immutable Data and Data Structures
+
+There are some libraries who provide facilities for immutable data structures in JavaScript, and some libraries for
+advance data structures, such as Algebraic Data Types. Unfortunetaly, I couldn't find any project in my sample who used
+either of them. 
+
+== What's Next
+
+As for my research, there are some obvious steps forward:
+
+- Look at a larger sample
+- Examine more structures other than iterations, for example assignments or monad-like structures
+- Look at the use of higher-order functions
+- Examine results into more detail.
+  - How easy it is to convert imperative iterations to declarative ones?
+- Examine changes of code over time: When do project contributors refactor one kind of iteration to another, if at all?
+- Look for projects migrating from Javascript to functional languages
+
+And of course, there are so many small improvements to make, such as supporting more flavors of Javascript, and even
+looking at Javascript's typed superset, TypeScript.
+
+=== No, no, no, I meant what's next for me...
+
+Oh! Well, if you don't like Javascript but need to write code that runs in a web browser there are several nice
+alterantives:
+
+- Elm, a small delightful language that IMHO solves many of the problems in web programming
+- ClojureScript, if you just can live another project without LISP
+- PureScript, a Haskell-like language that compiles to Javascript and has some tweeks for nicer interpolation with
+  Javascript.
+- Reason, an OCaml inspired language that started trending lately, mostly due to it's easy interop with Javascript.
+- Hundreds of other programming languages that can compile themselves to Javascript, such as Haskell, Kotlin, Scala,
+  Ruby, Python.
+- Google any word with "Script" added as suffix or that is a pun on coffee. There's probably a Javascript dialect or a
+  language that transpiles to Javascript by that name. Here's a list: https://github.com/jashkenas/coffeescript/wiki/list-of-languages-that-compile-to-js
+- Wait for the Web assembly standard to mature and then just write code in whatever languae you want.
+
+=== Shameless Plug
+
+If you find this project interesting, you can contribute to the code through it's repo on github, or by encouraging me
+to keep researching programming languages.
+
+I work for Prototyp, where we <put slogan here>. We're located in Stockholm and Barcelona and would be happy to help you
+with your projects.
+
+== Thank you!
+
+== Questions?
+
