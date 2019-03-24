@@ -55,7 +55,7 @@ toProjectInfo auth repo = do
   result <- queryProjectInfo auth owner name
   case result of
     Right project -> do
-      withDeps <- mapM (getRevisionDependencies auth owner name) (revisions project)
+      withDeps <- return []
       return $ project { revisions = withDeps }
     Left e -> do
       print e
