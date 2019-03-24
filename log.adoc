@@ -19,6 +19,7 @@ in favor of other iteration constructs.
 
 === Goals:
 
-. Get the first 1000 results from Github
-. Fix bug where updated metadata is being appended instead of overwritten
-. Gather metadata for the new projects
+. [x] Get the first 1000 results from Github
+. [ ] Fix bug where updated metadata is being appended instead of overwritten
+. [ ] Gather metadata for the new projects
+

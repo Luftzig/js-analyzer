@@ -9,7 +9,7 @@ import qualified GitHub.Endpoints.Repos   as Github
 import qualified GitHub.Endpoints.Search  as Github
 import qualified GitHub.Request           as Github
 
-import           Control.Monad            (forM_)
+import           Control.Monad            (when, unless, forM_)
 import           Control.Monad.IO.Class   (liftIO)
 import qualified Data.Aeson               as A
 import qualified Data.Aeson.Encode.Pretty as A
@@ -32,7 +32,7 @@ import qualified Data.Text.Lazy.IO        as TextIO
 import           Data.Vector              (Vector, fromList)
 import           Network.URI              (URI, uriToString)
 import           Options.Applicative
-import           System.Directory         (createDirectoryIfMissing)
+import           System.Directory         (doesFileExist, createDirectoryIfMissing)
 import           System.Environment       (getArgs, lookupEnv)
 import           System.FilePath.Posix    ((</>))
 import           System.IO                (FilePath)
@@ -70,7 +70,7 @@ main = do
     result <- getReposToProcess args auth
     case (process args, result) of
       (_, Left e)       -> putStrLn $ "Error: " ++ show e
-      (True, Right r)   -> analyzeRepos auth (outputDir args) r
+      (True, Right r)   -> processRepos auth args r
       (False, Right rs) -> print $ fmap repoId rs
     where
       repoId r = Data.Text.intercalate "/" [Github.untagName $ Github.simpleOwnerLogin $ Github.repoOwner r, Github.untagName $ Github.repoName r]
@@ -207,11 +207,17 @@ searchRepos auth search queryParams = do
     return $ Github.searchResultResults <$> response
 
 
-analyzeRepos :: Maybe Auth.Auth -> FilePath -> Vector Github.Repo -> IO ()
-analyzeRepos auth outputDir result = do
+processRepos :: Maybe Auth.Auth -> Options -> Vector Github.Repo -> IO ()
+processRepos auth options repoNames = do
+  repos <- getProjectsMetadata auth (outputDir options) repoNames
+  unless (metadataOnly options) $ forM_ repos (analyze $ outputDir options)
+
+
+getProjectsMetadata :: Maybe Auth.Auth -> FilePath -> Vector Github.Repo -> IO (Vector ProjectInfo)
+getProjectsMetadata auth outputDir result = do
     repos <- sequence $ toProjectInfo auth <$> result
     writeProjectsData outputDir repos
-    forM_ repos (analyze outputDir)
+    return repos
 
 
 writeProjectsData :: FilePath -> Vector ProjectInfo -> IO ()
@@ -226,8 +232,11 @@ writeProjectsData outputDir projects = do
 getExistingProjectsList :: FilePath -> IO (HM.HashMap Text ProjectInfo)
 getExistingProjectsList outDir = do
   let path = outDir </> "projects.json"
-  oldProjects <- A.decodeFileStrict path :: IO (Maybe (Vector ProjectInfo))
-  return $ case oldProjects of
-             Just ps -> foldl (\m p -> HM.insert (projectId p) p m) HM.empty ps
-             Nothing -> HM.empty
+  fileExists <- doesFileExist path
+  if fileExists then do
+    oldProjects <- A.decodeFileStrict path :: IO (Maybe (Vector ProjectInfo))
+    return $ case oldProjects of
+              Just ps -> foldl (\m p -> HM.insert (projectId p) p m) HM.empty ps
+              Nothing -> HM.empty
+    else return HM.empty
 

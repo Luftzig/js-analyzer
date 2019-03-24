@@ -6,7 +6,7 @@ module Data where
 
 import Control.Applicative
 
-import Data.Text (Text, intercalate, breakOn)
+import Data.Text (Text, intercalate, breakOn, tail, null)
 import Data.Traversable (Traversable)
 import Data.Time.Clock (UTCTime)
 import GHC.Generics
@@ -44,11 +44,17 @@ data ProjectInfo = ProjectInfo
 projectId :: ProjectInfo -> Text
 projectId p = intercalate "/" [projectOwner p, projectName p]
 
+
+splitId :: Text -> (Text, Text)
+splitId id =
+  let (owner, name) = breakOn "/" id
+  in
+    (owner, if Data.Text.null name then "" else Data.Text.tail name)
+
 instance FromJSON ProjectInfo where
   parseJSON (Object o) = do
     id <- o .: "id"
-    let projectName  = (snd . breakOn "/") id
-    let projectOwner = (fst . breakOn "/") id
+    let (projectName, projectOwner) = splitId id
     repoUrl <- o .: "url"
     revisions <- o .: "revisions"
     stars <- o .: "stars"
