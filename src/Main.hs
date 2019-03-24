@@ -51,6 +51,7 @@ data Options = Options
     , outputDir     :: String
     , reposFile     :: Maybe String
     , process       :: Bool
+    , metadataOnly  :: Bool
     , noUpdateRepos :: Bool
     }
 
@@ -127,7 +128,13 @@ args = Options
   <*> switch
     ( long "process"
     <> short 'p'
-    <> help "if set, will run the processing chain on the input (file or search) repositories. Otherwise will just print repositories metadata"
+    <> help "if set, will run the processing chain on the input (file or search) repositories. Otherwise will just print repositories IDs"
+    <> showDefault
+    )
+  <*> switch
+    ( long "metadata-only"
+    <> short 'm'
+    <> help "If used will only fetch metadata on the projects, but not process project files"
     <> showDefault
     )
   <*> switch
