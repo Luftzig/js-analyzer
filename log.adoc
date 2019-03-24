@@ -15,7 +15,7 @@ sampling the last commit of years 2009, 2012, 2015 and 2018.
 in favor of other iteration constructs.
 * I've written a 45 minutes talk about the topic that was presented in Lambda Days 2019
 
-== 2019, Mar 23:
+== 2019, Mar 23-24:
 
 === Goals:
 
@@ -23,3 +23,43 @@ in favor of other iteration constructs.
 . [ ] Fix bug where updated metadata is being appended instead of overwritten
 . [ ] Gather metadata for the new projects
 
+Failed to fetch 1000 repositories metadata, should use this GraphQL maybe instead
+
+.Fetch Metadata for All Repos matching search
+[source,graphql]
+----
+{
+  search(query: "language:javascript", type: REPOSITORY, first: 100) {
+    nodes {
+      __typename
+      ... on Repository {
+        name
+        owner {
+          id
+        }
+        url
+        isFork
+        createdAt
+        stargazers {
+          totalCount
+        }
+        watchers {
+          totalCount
+        }
+        defaultBranchRef {
+        	name
+        	target {
+          ... on Commit {
+            committedDate
+            head: oid
+            count: history(first: 1) {
+              totalCount
+            }
+          }
+          }
+        }
+      }
+    }
+  }
+}
+----
