@@ -221,6 +221,6 @@ getExistingProjectsList outDir = do
   let path = outDir </> "projects.json"
   oldProjects <- A.decodeFileStrict path :: IO (Maybe (Vector ProjectInfo))
   return $ case oldProjects of
-    Just ps -> foldl (\m p -> HM.insert (projectId p) p m) HM.empty ps
-    Nothing -> HM.empty
+             Just ps -> foldl (\m p -> HM.insert (projectId p) p m) HM.empty ps
+             Nothing -> HM.empty
 

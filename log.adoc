@@ -1,0 +1,24 @@
+= Research Log
+:Author: Yoav Luft
+:Started-At: 2019, March 23
+
+== Before Starting This Log
+
+* I've created a program that can gather metadata on projects from Github
+** Program has several stages:
+... Search github for repositories
+... Download metadata on repositories
+... Download the content of different commits and analyze the Javascript files
+* I've downloaded and analyzed the first 100 top javascript repositories (by stars) by
+sampling the last commit of years 2009, 2012, 2015 and 2018.
+** Analysis showed some trend of moving reducing the use of C-style for loops
+in favor of other iteration constructs.
+* I've written a 45 minutes talk about the topic that was presented in Lambda Days 2019
+
+== 2019, Mar 23:
+
+=== Goals:
+
+. Get the first 1000 results from Github
+. Fix bug where updated metadata is being appended instead of overwritten
+. Gather metadata for the new projects
